@@ -1,0 +1,34 @@
+src/main/resources/application.properties
+
+# Gradle build files and directories
+.gradle/
+build/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Generated files
+out/
+*.jar
+*.war
+
+# Classpath files
+.classpath
+.project
+
+# Local settings
+local.properties
+
+# Sensitive information
+*.keystore
+*.jks
