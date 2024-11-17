@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CCMe.Model.Job;
 import com.CCMe.Service.JobService;
 
-@CrossOrigin(origins="*", maxAge=3600)
 @RestController
 @RequestMapping("/jobs")
 public class JobController {

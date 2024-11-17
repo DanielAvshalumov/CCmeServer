@@ -1,6 +1,5 @@
 package com.CCMe.Model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,22 +10,16 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String field;
 
-    @Column
     private String company;
 
-    @Column
     private String location;
 
-    @Column
     private Integer views;
 
-    @Column
     private Integer ccs;
 
-    @Column
     private String description;
 
     public Job(){}

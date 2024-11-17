@@ -9,6 +9,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,7 @@ public class WebConfig{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http.authorizeHttpRequests(customize -> {
             customize
                 .requestMatchers("/**").permitAll()
@@ -52,7 +54,8 @@ public class WebConfig{
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest req) {
                 CorsConfiguration corsConfig = new CorsConfiguration();
-                corsConfig.addAllowedOrigin("http://localhost:3000");
+                corsConfig.addAllowedOrigin("http://localhost:3000/");
+                // corsConfig.setAllowedOrigins(List.of("http://localhost"));
                 // corsConfig.setAllowedOrigins(applicationProperties.getAllowedOrigins());
                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 corsConfig.setAllowedHeaders(List.of("*"));

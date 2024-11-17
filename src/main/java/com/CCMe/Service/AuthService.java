@@ -6,6 +6,7 @@ import javax.naming.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -40,7 +41,6 @@ public class AuthService {
     SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
     public void login(HttpServletRequest req, HttpServletResponse res, @Valid @RequestBody LogInRequest body) throws AuthenticationException {
-        System.out.println("Test " + body.getEmail()+ " " + body.getPassword());
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
@@ -53,6 +53,7 @@ public class AuthService {
     @Transactional
     public UserResponse getSession(HttpServletRequest req) throws Exception {
         User user = SecurityUtil.getAuthenticated();
+        userRepository.getReferenceById(user.getId());
         return new UserResponse(user);
     }
 

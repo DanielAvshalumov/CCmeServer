@@ -4,6 +4,7 @@ import javax.naming.AuthenticationException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@CrossOrigin(origins="*", maxAge=3600)
 public class AuthController {
 
     private final AuthService authService;
@@ -31,10 +31,9 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/me")
+    @GetMapping("/me")
     public ResponseEntity<?> getSesstion(HttpServletRequest req) throws Exception {
-        authService.getSession(req);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(authService.getSession(req));
     }
 
     @PostMapping("/logout")
