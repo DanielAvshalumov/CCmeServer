@@ -59,6 +59,8 @@ public class AuthService {
 
     public void logout(HttpServletRequest req, HttpServletResponse res) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("principal "+auth.getPrincipal()+" creds "+auth.getCredentials());
+        this.logoutHandler.setInvalidateHttpSession(true);
         this.logoutHandler.logout(req,res,auth);
     }
 }

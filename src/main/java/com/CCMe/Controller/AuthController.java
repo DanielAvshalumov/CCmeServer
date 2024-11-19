@@ -33,12 +33,14 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getSesstion(HttpServletRequest req) throws Exception {
+        System.out.println(req.getCookies());
         return ResponseEntity.ok(authService.getSession(req));
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest req, HttpServletResponse res) {
         authService.logout(req,res);
+        System.out.println(req.getCookies());
         return ResponseEntity.ok().build();
     }
 

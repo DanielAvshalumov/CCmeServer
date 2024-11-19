@@ -2,6 +2,7 @@ package com.CCMe.Configuration;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.CCMe.Exception.ApiException;
 import com.CCMe.Model.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ public class SecurityUtil {
             return user;
         } else {
             log.error("User requested but not found in context");
-            throw new Exception();
+            throw ApiException.builder().status(401).message("No auth").build();
         }
     }
 }
