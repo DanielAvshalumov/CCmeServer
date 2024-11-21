@@ -1,7 +1,10 @@
 package com.CCMe.Controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +45,12 @@ public class UserController {
     public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         userService.forgotPassword(forgotPasswordRequest.getEmail());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<UserResponse>> getAllNonContractors(@RequestParam(name="iscontractor") boolean isContractor) {
+        List<UserResponse> res = userService.getAllNonContractors(isContractor);
+        return ResponseEntity.ok(res);
     }
 
 }

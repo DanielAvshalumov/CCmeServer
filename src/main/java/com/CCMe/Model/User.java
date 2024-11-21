@@ -29,6 +29,7 @@ public class User extends AbstractEntity implements UserDetails{
     private String password;
     private String firstName;
     private String lastName;
+    private String company;
     private boolean isContractor;
     private boolean verified;
     @Enumerated(EnumType.STRING)
@@ -43,7 +44,9 @@ public class User extends AbstractEntity implements UserDetails{
         this.password = passwordEncoder.encode(userReq.getPassword());   
         this.firstName = userReq.getFirstName();
         this.lastName = userReq.getLastName();
+        this.company = userReq.getCompany();
         this.role = Role.USER;
+        this.isContractor = false;
     }
 
     @Override

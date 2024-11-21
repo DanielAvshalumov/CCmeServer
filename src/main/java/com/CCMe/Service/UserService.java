@@ -1,5 +1,8 @@
 package com.CCMe.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jobrunr.scheduling.BackgroundJobRequest;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +54,16 @@ public class UserService {
     public void forgotPassword(String email) {
         User user = userRepository.findByEmail(email);
         
+    }
+
+
+    public List<UserResponse> getAllNonContractors(boolean isContractor) {
+        List<UserResponse> nonContractors = 
+        userRepository.findByIsContractor(isContractor)
+            .stream()
+            .map(user -> {return new UserResponse(user);})
+            .collect(Collectors.toList());
+        return nonContractors;
     }
     
 }
