@@ -12,6 +12,7 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private String company;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -19,5 +20,6 @@ public class UserResponse {
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.company = user.getCompany();
     }
 }
