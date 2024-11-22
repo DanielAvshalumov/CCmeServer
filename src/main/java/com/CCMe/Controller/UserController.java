@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.CCMe.Configuration.ApplicationProperties;
 import com.CCMe.Model.Request.CreateUserRequest;
 import com.CCMe.Model.Request.ForgotPasswordRequest;
+import com.CCMe.Model.Request.UpdateUserRequest;
 import com.CCMe.Model.Request.UserResponse;
 import com.CCMe.Service.UserService;
 
@@ -28,6 +30,12 @@ public class UserController {
 
     private final UserService userService;
     private final ApplicationProperties applicationProperties;
+
+    @GetMapping("/")
+    public ResponseEntity<List<UserResponse>> getAllNonContractors(@RequestParam(name="iscontractor") boolean isContractor) {
+        List<UserResponse> res = userService.getAllNonContractors(isContractor);
+        return ResponseEntity.ok(res);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<UserResponse> create(@Valid @RequestBody CreateUserRequest req) {
@@ -47,10 +55,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<UserResponse>> getAllNonContractors(@RequestParam(name="iscontractor") boolean isContractor) {
-        List<UserResponse> res = userService.getAllNonContractors(isContractor);
-        return ResponseEntity.ok(res);
+    @PutMapping("/update")
+    public ResponseEntity<UserResponse> update(@RequestBody UpdateUserRequest updateUserRequest) throws Exception {
+        userService.update(updateUserRequest);
+        return ResponseEntity.ok().build();
     }
 
 }
