@@ -70,11 +70,17 @@ public class UserService {
         return nonContractors;
     }
 
+    @Transactional
     public UserResponse update(UpdateUserRequest updateUserRequest) throws Exception {
         User user = SecurityUtil.getAuthenticated();
         user = userRepository.getReferenceById(user.getId());
         BeanUtils.copyProperties(updateUserRequest,user,"id");
         return new UserResponse(userRepository.save(user));
+    }
+
+    public UserResponse getUser(Long id) {
+        User user = userRepository.findById(id).get();
+        return new UserResponse(user);
     }
     
 }

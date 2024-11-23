@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,12 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getAllNonContractors(@RequestParam(name="iscontractor") boolean isContractor) {
         List<UserResponse> res = userService.getAllNonContractors(isContractor);
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
+        UserResponse user = userService.getUser(id);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/create")
