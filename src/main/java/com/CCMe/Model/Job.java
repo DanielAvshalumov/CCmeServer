@@ -1,15 +1,16 @@
 package com.CCMe.Model;
 
+import com.CCMe.Entity.AbstractEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 @Entity
-public class Job {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Job extends AbstractEntity{
+    
     private String field;
 
     private String company;
@@ -22,19 +23,19 @@ public class Job {
 
     private String description;
 
+    @ManyToOne
+    private User owner;
+
     public Job(){}
 
-    public Job(String field, String company, String location, Integer views, Integer ccs, String description) {
+    public Job(String field, String company, String location, String description, User owner) {
         this.field = field;
         this.company = company;
         this.location = location;
-        this.views = views;
-        this.ccs = ccs;
+        this.views = 0;
+        this.ccs = 0;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
+        this.owner = owner;
     }
 
     public String getField() {
@@ -82,5 +83,14 @@ public class Job {
     }
 
     public void setDescription(String description) {
-        this.description = description;    } 
+        this.description = description;
+    }
+    
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 }

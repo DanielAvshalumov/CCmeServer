@@ -13,6 +13,7 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String company;
+    private boolean isContractor;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -21,5 +22,6 @@ public class UserResponse {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.company = user.getCompany();
+        this.isContractor = user.getIsContractor();
     }
 }

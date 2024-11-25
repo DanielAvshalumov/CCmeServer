@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Model.Job;
+import com.CCMe.Model.User;
 import com.CCMe.Repository.JobRepository;
 
 @Service
@@ -27,6 +29,13 @@ public class JobServiceImp implements JobService{
     public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException {
         List<Job> arr = jobRepo.findByField(field);
         return new ResponseEntity<>(arr, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Job> create(Job job) throws Exception{
+        job.setOwner(SecurityUtil.getAuthenticated());
+        Job res = jobRepo.save(job);
+        return new ResponseEntity<>(res,HttpStatus.OK);
     }
     
 }

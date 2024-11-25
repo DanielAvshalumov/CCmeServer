@@ -2,6 +2,7 @@ package com.CCMe.Model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ import com.CCMe.utils.ApplicationContextProvider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +32,13 @@ public class User extends AbstractEntity implements UserDetails{
     private String firstName;
     private String lastName;
     private String company;
-    private boolean isContractor;
+    private Boolean isContractor;
     private boolean verified;
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToOne(mappedBy = "user")
-    private VerificationCode verificationCode;
+    private VerificationCode verificationCode;    
 
     public User(CreateUserRequest userReq) {
         PasswordEncoder passwordEncoder = ApplicationContextProvider.bean(PasswordEncoder.class);
@@ -58,4 +60,5 @@ public class User extends AbstractEntity implements UserDetails{
     public String getUsername() {
         return email;
     }
+
 }

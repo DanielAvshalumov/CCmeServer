@@ -10,4 +10,5 @@ import com.CCMe.Model.Job;
 public interface JobService {
     public ResponseEntity<List<Job>> getAll() throws NotFoundException;
     public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException;
+    public ResponseEntity<Job> create(Job job) throws Exception;
 }
