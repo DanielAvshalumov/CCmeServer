@@ -37,5 +37,12 @@ public class JobServiceImp implements JobService{
         Job res = jobRepo.save(job);
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<Job>> getJobsByOwner(Long id) throws Exception {
+        User user = SecurityUtil.getAuthenticated();
+        List<Job> jobs = jobRepo.findByOwner(user);
+        return new ResponseEntity<>(jobs,HttpStatus.OK);
+    }   
     
 }
