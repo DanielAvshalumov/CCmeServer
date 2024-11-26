@@ -23,6 +23,8 @@ public class Job extends AbstractEntity{
 
     private String description;
 
+    private Boolean completed;
+
     @ManyToOne
     private User owner;
 
@@ -36,6 +38,7 @@ public class Job extends AbstractEntity{
         this.ccs = 0;
         this.description = description;
         this.owner = owner;
+        this.completed = false;
     }
 
     public String getField() {
@@ -84,6 +87,14 @@ public class Job extends AbstractEntity{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
     
     public User getOwner() {
