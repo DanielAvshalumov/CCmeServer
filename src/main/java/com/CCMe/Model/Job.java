@@ -3,12 +3,17 @@ package com.CCMe.Model;
 import com.CCMe.Entity.AbstractEntity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.NoArgsConstructor;
+
 @Entity
+@NoArgsConstructor
 public class Job extends AbstractEntity{
     
     private String field;
@@ -23,22 +28,21 @@ public class Job extends AbstractEntity{
 
     private String description;
 
-    private Boolean completed;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     private User owner;
 
-    public Job(){}
-
-    public Job(String field, String company, String location, String description, User owner) {
+    public Job(String field, String company, String location, String description) {
+        System.out.println("Constructor hit");
         this.field = field;
         this.company = company;
         this.location = location;
-        this.views = 0;
-        this.ccs = 0;
+        this.views = 1;
+        this.ccs = 1;
         this.description = description;
-        this.owner = owner;
-        this.completed = false;
+        this.status = Status.INCOMPLETE;
     }
 
     public String getField() {
@@ -88,14 +92,6 @@ public class Job extends AbstractEntity{
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Boolean getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
-    }
     
     public User getOwner() {
         return owner;
@@ -103,5 +99,13 @@ public class Job extends AbstractEntity{
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

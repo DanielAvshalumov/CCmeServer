@@ -44,4 +44,9 @@ public class JobController {
     public ResponseEntity<Job> create(@RequestBody Job job) throws Exception {
         return jobService.create(job);
     }
+
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<Job> complete(@PathVariable("id") Long id) {
+        return jobService.complete(id);
+    }
 }
