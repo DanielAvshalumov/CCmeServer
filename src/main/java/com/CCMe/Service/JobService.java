@@ -12,5 +12,6 @@ public interface JobService {
     public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException;
     public ResponseEntity<Job> create(Job job) throws Exception;
     public ResponseEntity<List<Job>> getJobsByOwner(Long id) throws Exception;
-    public ResponseEntity<Job> complete(Long id);
+    public ResponseEntity<Job> complete(Long jobId);
+    public ResponseEntity<Job> apply(Long id) throws Exception;
 }

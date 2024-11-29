@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CCMe.Model.Job;
 import com.CCMe.Service.JobService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
@@ -43,6 +45,12 @@ public class JobController {
     @PostMapping("/create")
     public ResponseEntity<Job> create(@RequestBody Job job) throws Exception {
         return jobService.create(job);
+    }
+
+    @PostMapping("/apply/{id}")
+    public ResponseEntity<Job> apply(HttpServletRequest req, @PathVariable("id") Long jobId) throws Exception{
+        System.out.println(req.getCookies());
+        return jobService.apply(jobId);
     }
 
     @PostMapping("/complete/{id}")

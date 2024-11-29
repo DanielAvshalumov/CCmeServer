@@ -54,7 +54,7 @@ public class WebConfig{
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest req) {
                 CorsConfiguration corsConfig = new CorsConfiguration();
-                corsConfig.addAllowedOrigin("http://localhost:3000/");
+                corsConfig.addAllowedOrigin("http://localhost:3000");
                 // corsConfig.setAllowedOrigins(List.of("http://localhost"));
                 // corsConfig.setAllowedOrigins(applicationProperties.getAllowedOrigins());
                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));

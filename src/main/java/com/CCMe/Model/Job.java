@@ -1,5 +1,8 @@
 package com.CCMe.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.CCMe.Entity.AbstractEntity;
 
 import jakarta.persistence.Entity;
@@ -34,6 +37,8 @@ public class Job extends AbstractEntity{
     @ManyToOne
     private User owner;
 
+    private List<Long> applicants;
+
     public Job(String field, String company, String location, String description) {
         System.out.println("Constructor hit");
         this.field = field;
@@ -43,6 +48,7 @@ public class Job extends AbstractEntity{
         this.ccs = 1;
         this.description = description;
         this.status = Status.INCOMPLETE;
+        this.applicants = new ArrayList<>();
     }
 
     public String getField() {
@@ -107,5 +113,17 @@ public class Job extends AbstractEntity{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<Long> getApplicants() {
+        return applicants;
+    }
+
+    public void setApplicants(List<Long> applicants) {
+        this.applicants = applicants;
+    }
+
+    public void addApplicant(Long userId) {
+        this.applicants.add(userId);
     }
 }

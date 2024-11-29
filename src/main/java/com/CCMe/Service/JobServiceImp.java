@@ -1,6 +1,7 @@
 package com.CCMe.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -42,6 +43,7 @@ public class JobServiceImp implements JobService{
         }
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setStatus(Status.INCOMPLETE);
+        job.setApplicants(new ArrayList<>());
         Job res = jobRepo.save(job);
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
@@ -57,6 +59,15 @@ public class JobServiceImp implements JobService{
     public ResponseEntity<Job> complete(Long id) {
         Job job = jobRepo.findById(id).get();
         job.setStatus(Status.ONGOING);
+        return new ResponseEntity<>(jobRepo.save(job),HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Job> apply(Long jobId) throws Exception {
+        Job job = jobRepo.findById(jobId).get();
+        User user = SecurityUtil.getAuthenticated();
+        Long userId = user.getId();
+        job.addApplicant(userId);
         return new ResponseEntity<>(jobRepo.save(job),HttpStatus.OK);
     }   
     
