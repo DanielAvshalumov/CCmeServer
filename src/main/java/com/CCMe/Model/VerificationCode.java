@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.*;
 
 import com.CCMe.Entity.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Getter
@@ -20,6 +21,7 @@ public class VerificationCode extends AbstractEntity {
     private boolean emailSent = false;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     public VerificationCode(User user) {

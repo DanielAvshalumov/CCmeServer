@@ -47,12 +47,6 @@ public class JobController {
         return jobService.create(job);
     }
 
-    @PostMapping("/apply/{id}")
-    public ResponseEntity<Job> apply(HttpServletRequest req, @PathVariable("id") Long jobId) throws Exception{
-        System.out.println(req.getCookies());
-        return jobService.apply(jobId);
-    }
-
     @PostMapping("/complete/{id}")
     public ResponseEntity<Job> complete(@PathVariable("id") Long id) {
         return jobService.complete(id);

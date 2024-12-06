@@ -36,14 +36,8 @@ public class JobServiceImp implements JobService{
 
     @Override
     public ResponseEntity<Job> create(Job job) throws Exception{
-        Field[] fields = job.getClass().getDeclaredFields();
-        for(Field field : fields) {
-            field.setAccessible(true);
-            System.out.println(field.get(job));            
-        }
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setStatus(Status.INCOMPLETE);
-        job.setApplicants(new ArrayList<>());
         Job res = jobRepo.save(job);
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
@@ -61,14 +55,4 @@ public class JobServiceImp implements JobService{
         job.setStatus(Status.ONGOING);
         return new ResponseEntity<>(jobRepo.save(job),HttpStatus.OK);
     }
-
-    @Override
-    public ResponseEntity<Job> apply(Long jobId) throws Exception {
-        Job job = jobRepo.findById(jobId).get();
-        User user = SecurityUtil.getAuthenticated();
-        Long userId = user.getId();
-        job.addApplicant(userId);
-        return new ResponseEntity<>(jobRepo.save(job),HttpStatus.OK);
-    }   
-    
 }
