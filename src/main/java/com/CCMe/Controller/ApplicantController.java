@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CCMe.Model.Applicant;
+import com.CCMe.Model.Decision;
 import com.CCMe.Service.ApplicantService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,10 @@ public class ApplicantController {
     @PostMapping("/create/{id}")
     public ResponseEntity<Applicant> createApplicant(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok(applicantService.create(id));
+    }
+
+    @PostMapping("/decide/{id}")
+    public ResponseEntity<Applicant> decideApplication(@PathVariable("id") Long id, @RequestBody Decision decision) {
+        return ResponseEntity.ok(applicantService.decide(id, decision));
     }
 }

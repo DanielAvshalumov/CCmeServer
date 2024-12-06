@@ -36,4 +36,10 @@ public class ApplicantService {
         List<Applicant> applicants = applicantRepository.findAllByContractorId(id);
         return applicants;
     }
+
+    public Applicant decide(Long id, Decision decision) {
+        Applicant app = applicantRepository.findById(id).get();
+        app.setDecision(decision);
+        return applicantRepository.save(app);
+    }
 }
