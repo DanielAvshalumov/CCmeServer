@@ -53,12 +53,6 @@ public class UserService {
         verificationRepository.delete(verificationCode);
     }
 
-    @Transactional
-    public void forgotPassword(String email) {
-        User user = userRepository.findByEmail(email);
-        
-    }
-
 
     public List<UserResponse> getAllNonContractors(boolean isContractor) {
         List<UserResponse> nonContractors = 
