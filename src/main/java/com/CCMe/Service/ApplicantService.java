@@ -12,7 +12,6 @@ import com.CCMe.Model.Job;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.ApplicantRepository;
 import com.CCMe.Repository.JobRepository;
-import com.CCMe.Repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +34,11 @@ public class ApplicantService {
     public List<Applicant> getApplicantsByJob(Long id) {
         List<Applicant> applicants = applicantRepository.findAllByContractorId(id);
         return applicants;
+    }
+
+    public Applicant decide(Long id, Decision decision) {
+        Applicant app = applicantRepository.findById(id).get();
+        app.setDecision(decision);
+        return applicantRepository.save(app);
     }
 }

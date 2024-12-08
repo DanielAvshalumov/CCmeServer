@@ -1,6 +1,5 @@
 package com.CCMe.Service;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,12 +51,6 @@ public class UserService {
         user.setVerified(true);
         userRepository.save(user);
         verificationRepository.delete(verificationCode);
-    }
-
-    @Transactional
-    public void forgotPassword(String email) {
-        User user = userRepository.findByEmail(email);
-        
     }
 
 
