@@ -12,7 +12,6 @@ import com.CCMe.Model.Job;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.ApplicantRepository;
 import com.CCMe.Repository.JobRepository;
-import com.CCMe.Repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
