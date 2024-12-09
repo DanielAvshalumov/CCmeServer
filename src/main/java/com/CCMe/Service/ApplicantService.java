@@ -9,6 +9,7 @@ import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Model.Applicant;
 import com.CCMe.Model.Decision;
 import com.CCMe.Model.Job;
+import com.CCMe.Model.Status;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.ApplicantRepository;
 import com.CCMe.Repository.JobRepository;
@@ -39,6 +40,9 @@ public class ApplicantService {
     public Applicant decide(Long id, Decision decision) {
         Applicant app = applicantRepository.findById(id).get();
         app.setDecision(decision);
+        if(decision == Decision.ACCEPTED) {
+            app.getContractor().setStatus(Status.ONGOING);
+        }
         return applicantRepository.save(app);
     }
 }

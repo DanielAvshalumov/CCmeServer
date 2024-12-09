@@ -54,11 +54,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
-        userService.forgotPassword(forgotPasswordRequest.getEmail());
-        return ResponseEntity.ok().build();
-    }
+    // @PostMapping("/forgot-password")
+    // public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+    //     userService.forgotPassword(forgotPasswordRequest.getEmail());
+    //     return ResponseEntity.ok().build();
+    // }
 
     @PutMapping("/update")
     public ResponseEntity<UserResponse> update(@RequestBody UpdateUserRequest updateUserRequest) throws Exception {

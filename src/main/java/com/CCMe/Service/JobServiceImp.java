@@ -1,6 +1,7 @@
 package com.CCMe.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,14 @@ public class JobServiceImp implements JobService{
         Job job = jobRepo.findById(id).get();
         job.setStatus(Status.ONGOING);
         return new ResponseEntity<>(jobRepo.save(job),HttpStatus.OK);
+    }
+
+    @Override
+    public List<Job> getJobsByApplicant(Long id) {
+        List<Job> jobs = jobRepo.getIdsBySender(id).stream().map(_id -> {
+            Job _job = jobRepo.findById(_id).get();
+            return _job;
+        }).collect(Collectors.toList());
+        return jobs;
     }
 }

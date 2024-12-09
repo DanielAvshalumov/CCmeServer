@@ -2,6 +2,7 @@ package com.CCMe.Controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,11 @@ public class JobController {
     @GetMapping("/user")
     public ResponseEntity<List<Job>> getJobsByOwner(@RequestParam(name="id") Long id) throws Exception{
         return jobService.getJobsByOwner(id);
+    }
+
+    @GetMapping("/sender/{id}")
+    public ResponseEntity<List<Job>>getJobsByApplicant(@PathVariable("id") Long id) throws Exception {
+        return ResponseEntity.ok(jobService.getJobsByApplicant(id));
     }
 
     @GetMapping("/{field}")

@@ -30,6 +30,8 @@ public class Job extends AbstractEntity{
     @ManyToOne
     private User owner;
 
+    // Add Budget and Start_Date
+
     public Job(String field, String company, String location, String description) {
         System.out.println("Constructor hit");
         this.field = field;
