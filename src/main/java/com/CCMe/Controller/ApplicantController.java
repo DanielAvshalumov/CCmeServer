@@ -2,6 +2,7 @@ package com.CCMe.Controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,8 @@ public class ApplicantController {
     
     @PostMapping("/create/{id}")
     public ResponseEntity<Applicant> createApplicant(@PathVariable("id") Long id) throws Exception {
-        return ResponseEntity.ok(applicantService.create(id));
+        Applicant res = applicantService.create(id);
+        return res != null ? ResponseEntity.ok(res) : new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/decide/{id}")

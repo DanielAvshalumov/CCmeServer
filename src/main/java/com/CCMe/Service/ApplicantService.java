@@ -28,6 +28,9 @@ public class ApplicantService {
     public Applicant create(Long id) throws Exception {
         Job contractor = jobRepository.findById(id).get();
         User sender = SecurityUtil.getAuthenticated();
+        if(contractor.getOwner().getId() == sender.getId()) {
+            return null;
+        }
         Applicant applicant = new Applicant(sender, contractor, Decision.UNDECIDED, new Date());
         return applicantRepository.save(applicant);
     }

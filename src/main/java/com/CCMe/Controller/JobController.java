@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CCMe.Model.Job;
+import com.CCMe.Model.Status;
 import com.CCMe.Service.JobService;
 
 
@@ -30,6 +31,12 @@ public class JobController {
     public ResponseEntity<List<Job>> getAllJobs() throws NotFoundException {
         return jobService.getAll();
     }
+
+    // @GetMapping("") {
+    // public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam(name="status") Status status) {
+    //     return jobService.getJobsByStatus
+    // }
+    // }
 
     @GetMapping("/user")
     public ResponseEntity<List<Job>> getJobsByOwner(@RequestParam(name="id") Long id) throws Exception{

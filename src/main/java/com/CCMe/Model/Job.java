@@ -1,11 +1,15 @@
 package com.CCMe.Model;
 
+import java.util.Date;
+
 import com.CCMe.Entity.AbstractEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -31,6 +35,10 @@ public class Job extends AbstractEntity{
     private User owner;
 
     // Add Budget and Start_Date
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created_at;
+
+    private Payment payment;
 
     public Job(String field, String company, String location, String description) {
         System.out.println("Constructor hit");
@@ -105,5 +113,21 @@ public class Job extends AbstractEntity{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Date getDate() {
+        return created_at;
+    }
+
+    public void setDate(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }
