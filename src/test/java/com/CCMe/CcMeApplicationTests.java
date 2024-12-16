@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.CCMe.Repository.JobRepository;
+
 @SpringBootTest
 class CcMeApplicationTests {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JobRepository jobRepo;
 
 	@Test
 	public void testPasswordEncoder() {
@@ -20,7 +25,8 @@ class CcMeApplicationTests {
 	}
 
 	@Test
-	void contextLoads() {
+	void testProfileJobs() {
+		
 	}
 
 }

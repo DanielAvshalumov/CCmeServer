@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CCMe.Model.Job;
+import com.CCMe.Model.JobResponse;
 import com.CCMe.Model.Status;
 import com.CCMe.Service.JobService;
 
@@ -44,7 +45,7 @@ public class JobController {
     }
 
     @GetMapping("/sender/{id}")
-    public ResponseEntity<List<Job>>getJobsByApplicant(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<List<Object>>getJobsByApplicant(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok(jobService.getJobsByApplicant(id));
     }
 

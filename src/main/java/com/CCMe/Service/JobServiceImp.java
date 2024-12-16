@@ -1,6 +1,9 @@
 package com.CCMe.Service;
 
+import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Model.Job;
+import com.CCMe.Model.JobResponse;
 import com.CCMe.Model.Status;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.JobRepository;
@@ -37,6 +41,7 @@ public class JobServiceImp implements JobService{
     public ResponseEntity<Job> create(Job job) throws Exception{
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setStatus(Status.INCOMPLETE);
+        job.setDate(new Date());
         Job res = jobRepo.save(job);
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
@@ -56,11 +61,25 @@ public class JobServiceImp implements JobService{
     }
 
     @Override
-    public List<Job> getJobsByApplicant(Long id) {
-        List<Job> jobs = jobRepo.getIdsBySender(id).stream().map(_id -> {
-            Job _job = jobRepo.findById(_id).get();
-            return _job;
-        }).collect(Collectors.toList());
+    public List<Object> getJobsByApplicant(Long id) {
+        // List<JobResponse> jobs = jobRepo.getIdsBySender(id).stream().map(_id -> {
+        //     Job job = jobRepo.findById(_id).get();
+        //     JobResponse res = new JobResponse(
+        //         job.getId(),
+        //         job.getField(),
+        //         job.getCompany(),
+        //         job.getLocation(),
+        //         job.getOwner()
+        //     );
+        //     return res;
+        // }).collect(Collectors.toList());
+        // List<JobResponse> jobs = jobRepo.getProfileJobs(id).stream().map(job -> {
+        //     return new JobResponse(
+
+        //     );
+        // }).collect(Collectors.toList());
+        List<Object> jobs = jobRepo.getProfileJobs(id);
+        System.out.println(jobs);
         return jobs;
     }
 }
