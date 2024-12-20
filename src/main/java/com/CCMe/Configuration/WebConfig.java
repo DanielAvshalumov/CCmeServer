@@ -56,7 +56,7 @@ public class WebConfig{
                 corsConfig.addAllowedOrigin("http://localhost:3000");
                 // corsConfig.setAllowedOrigins(List.of("http://localhost"));
                 // corsConfig.setAllowedOrigins(applicationProperties.getAllowedOrigins());
-                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                 corsConfig.setAllowedHeaders(List.of("*"));
                 corsConfig.setAllowCredentials(true);
                 return corsConfig;

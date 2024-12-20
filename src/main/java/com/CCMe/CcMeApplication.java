@@ -10,4 +10,4 @@ public class CcMeApplication {
 		SpringApplication.run(CcMeApplication.class, args);
 	}
 
-}
+}	

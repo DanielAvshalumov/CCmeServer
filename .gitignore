@@ -32,3 +32,6 @@ local.properties
 # Sensitive information
 *.keystore
 *.jks
+
+# Environment Vars
+.env
