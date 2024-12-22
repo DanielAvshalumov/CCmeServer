@@ -33,6 +33,7 @@ public class User extends AbstractEntity implements UserDetails{
     private boolean verified;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String profilePictureUrl;
 
     @OneToOne(mappedBy = "user")
     private VerificationCode verificationCode;    
