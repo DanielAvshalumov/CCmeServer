@@ -1,4 +1,4 @@
-src/main/resources/application.properties
+CCMe/bin/main/application.properties
 
 # Gradle build files and directories
 .gradle/
