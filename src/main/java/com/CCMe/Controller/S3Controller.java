@@ -2,7 +2,6 @@ package com.CCMe.Controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +22,8 @@ public class S3Controller {
     private final S3Service s3Service;
 
     @RequestMapping(value="/upload", method=RequestMethod.PATCH, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("id") Long Id) {
-        return ResponseEntity.ok(s3Service.uploadFile(Id, file));
-    }
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
+        return s3Service.uploadFile(file.getOriginalFilename(), file);
 
-    @GetMapping("/get-profile-picture")
-    public ResponseEntity<String> get(@RequestParam("id") Long Id) {
-        return ResponseEntity.ok(s3Service.getFile(Id));
     }
 }
