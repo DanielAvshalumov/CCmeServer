@@ -29,7 +29,7 @@ public class S3Service {
     private final UserRepository userRepository;
 
     public String uploadFile(Long id, MultipartFile file) {
-        String keyName = Long.toString(id)+"/pp"; 
+        String keyName = Long.toString(id)+"/"+file.getOriginalFilename(); 
         try {
             s3Client.putObject(PutObjectRequest.builder()
                 .bucket(BUCKET_NAME)
@@ -47,7 +47,7 @@ public class S3Service {
         try {
             User user = userRepository.findById(id).get();
             String res = s3Client.utilities().getUrl(getUrlRequest).toURI().toString();
-            System.out.println("Setting Profile Picture: " + keyName);
+            System.out.println("Setting Profile Picture: " + res);
             user.setProfilePictureUrl(res);
             userRepository.save(user);
             return res;

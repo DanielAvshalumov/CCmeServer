@@ -32,4 +32,6 @@ public class CreateUserRequest {
     private String lastName;
     @Nullable
     private String company;
+    private String phoneNumber;
+    private boolean isContractor;
 }

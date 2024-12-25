@@ -23,7 +23,7 @@ public class UserResponse {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.company = user.getCompany();
-        this.isContractor = user.getIsContractor();
+        this.isContractor = user.isContractor();
         this.profilePictureUrl = user.getProfilePictureUrl();
     }
 }
