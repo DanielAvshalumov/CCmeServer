@@ -29,10 +29,12 @@ public class User extends AbstractEntity implements UserDetails{
     private String firstName;
     private String lastName;
     private String company;
-    private Boolean isContractor;
+    private String phoneNumber;
+    private boolean isContractor;
     private boolean verified;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String profilePictureUrl;
 
     @OneToOne(mappedBy = "user")
     private VerificationCode verificationCode;    
@@ -45,7 +47,8 @@ public class User extends AbstractEntity implements UserDetails{
         this.lastName = userReq.getLastName();
         this.company = userReq.getCompany();
         this.role = Role.USER;
-        this.isContractor = false;
+        this.isContractor = userReq.isContractor();
+        this.phoneNumber = userReq.getPhoneNumber();
     }
 
     @Override
