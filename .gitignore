@@ -1,4 +1,3 @@
-src/main/resources/application.properties
 
 # Gradle build files and directories
 .gradle/
