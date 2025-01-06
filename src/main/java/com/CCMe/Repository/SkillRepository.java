@@ -13,4 +13,6 @@ public interface SkillRepository extends JpaRepository<Skill, Long>{
     List<Skill> findAllByUser(User user);
 
     List<Skill> findDistinctBy();
+
+    List<Skill> findByNameIn(List<String> names);
 }

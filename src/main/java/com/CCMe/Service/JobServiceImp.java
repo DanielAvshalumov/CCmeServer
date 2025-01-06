@@ -1,6 +1,7 @@
 package com.CCMe.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -8,12 +9,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jobrunr.scheduling.BackgroundJobRequest;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.CCMe.Configuration.SecurityUtil;
+import com.CCMe.Emails.SendJobAfterCreationEmail;
 import com.CCMe.Model.CreateJobRequest;
 import com.CCMe.Model.Job;
 import com.CCMe.Model.Skill;
@@ -48,7 +51,11 @@ public class JobServiceImp implements JobService{
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
         // Get full List of Skills
+        List<String> skillsToParse = new ArrayList<>();
         List<String> namesToAdd = jobRequest.getSkills();
+        for(String name : namesToAdd) {
+            skillsToParse.add(name);
+        }
         List<String> allNames = skillRepository.findDistinctBy().stream().map(skill -> {
             return skill.getName();
         }).collect(Collectors.toList());
@@ -59,7 +66,14 @@ public class JobServiceImp implements JobService{
         }).collect(Collectors.toList());
         skillRepository.saveAll(skillsToAdd);
         jobRepo.save(job);
+        // Send email alert to those with the skills
+        sendJobAfterCreationEmail(skillsToParse);
         return ResponseEntity.ok(job);
+    }
+
+    private void sendJobAfterCreationEmail(List<String> names) {
+        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names);
+        BackgroundJobRequest.enqueue(sendJobAferCreationEmail);
     }
 
     @Override
