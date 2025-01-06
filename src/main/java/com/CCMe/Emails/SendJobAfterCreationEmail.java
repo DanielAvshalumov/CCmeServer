@@ -3,6 +3,8 @@ import java.util.List;
 import org.jobrunr.jobs.lambdas.JobRequest;
 import org.jobrunr.jobs.lambdas.JobRequestHandler;
 
+import com.CCMe.Model.Job;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class SendJobAfterCreationEmail implements JobRequest{
     
     private List<String> emails;
+    private Job job;
 
     @SuppressWarnings("rawtypes")
     @Override

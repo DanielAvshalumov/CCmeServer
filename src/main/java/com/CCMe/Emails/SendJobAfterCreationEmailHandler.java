@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 
 import org.jobrunr.jobs.lambdas.JobRequestHandler;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.CCMe.Model.Job;
 import com.CCMe.Model.Skill;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.SkillRepository;
@@ -25,13 +28,14 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
     private final UserRepository userRepository;
     private final SkillRepository skillRepository;
     private final EmailService emailService;
+    private final TemplateEngine templateEngine;
 
     @Override
     public void run(SendJobAfterCreationEmail jobRequest) throws Exception {
-        sendJobAfterCreationEmail(jobRequest.getEmails());
+        sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJob());
     }
     
-    private void sendJobAfterCreationEmail(List<String> names) {
+    private void sendJobAfterCreationEmail(List<String> names, Job job) {
         List<String> emails = new ArrayList<>();
         List<Skill> userSkills = skillRepository.findByNameIn(names);
         List<User> usersToSend = userSkills.stream().map(user -> {
@@ -39,12 +43,22 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
         }).collect(Collectors.toList());
         System.out.println(userSkills.size());
         for(int i = 0; i < userSkills.size(); i++) {
-            System.out.println("UserSkills " + userSkills.get(i).getName());
-            System.out.println("UsersToSend " + usersToSend.get(i).getEmail());
-            emails.add(usersToSend.get(i).getEmail());
+            try {
+                System.out.println("UserSkills " + userSkills.get(i).getName());
+                System.out.println("UsersToSend " + usersToSend.get(i).getEmail());
+                emails.add(usersToSend.get(i).getEmail());
+            } catch(NullPointerException ex) {
+                System.out.println("Adding Skill: " + userSkills.get(i).getName());
+                // TODO: Implement logic new Skills and who to send these jobs to 
+            }
         }
         log.info("Will send an email with the following email: {}",usersToSend);
-        emailService.sendSimpleEmail(emails, "New Job Alert", "Check out this new job");
+        // emailService.sendSimpleEmail(emails, "New Job Alert", "Check out this new job");
+        Context ctx = new Context();
+        ctx.setVariable("company", job.getCompany());
+        ctx.setVariable("description", job.getDescription());
+        String htmlBody = templateEngine.process("job-after-creation-email", ctx);
+        emailService.sendHtmlMessage(emails, "New Job In Your Field", htmlBody);
     }
 
 }

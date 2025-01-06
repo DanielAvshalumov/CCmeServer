@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.jobrunr.scheduling.BackgroundJobRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Emails.SendWelcomeEmail;
@@ -27,6 +28,7 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final VerificationCodeRepository verificationRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public UserResponse create(@Valid CreateUserRequest req) {
@@ -82,6 +84,11 @@ public class UserService {
         user.setDescription(description);
         User res = userRepository.save(user);
         return new UserResponse(res);
+    }
+
+    public UserResponse updateProfilePicture(MultipartFile file) throws Exception{
+        User user = SecurityUtil.getAuthenticated();
+        return null;
     }
     
 }

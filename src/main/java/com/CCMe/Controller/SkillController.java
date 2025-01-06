@@ -23,8 +23,8 @@ public class SkillController {
     private final SkillService skillService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Skill>> getAllSkills() {
-        List<Skill> res = skillService.getAllSkills();
+    public ResponseEntity<List<String>> getAllSkills() {
+        List<String> res = skillService.getAllDistinctSkills();
         return ResponseEntity.ok(res);
     }
 

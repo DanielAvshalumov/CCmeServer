@@ -65,14 +65,14 @@ public class JobServiceImp implements JobService{
             return new Skill(skill, 0, null);
         }).collect(Collectors.toList());
         skillRepository.saveAll(skillsToAdd);
-        jobRepo.save(job);
+        Job res = jobRepo.save(job);
         // Send email alert to those with the skills
-        sendJobAfterCreationEmail(skillsToParse);
+        sendJobAfterCreationEmail(skillsToParse,res);
         return ResponseEntity.ok(job);
     }
 
-    private void sendJobAfterCreationEmail(List<String> names) {
-        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names);
+    private void sendJobAfterCreationEmail(List<String> names, Job job) {
+        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job);
         BackgroundJobRequest.enqueue(sendJobAferCreationEmail);
     }
 

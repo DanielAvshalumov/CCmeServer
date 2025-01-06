@@ -32,8 +32,16 @@ public class SkillService {
         }
     }
 
-    public List<Skill> getAllSkills() {
-        List<Skill> skills = skillRepository.findDistinctBy();
-        return skills;
+    public List<String> getAllDistinctSkills() {
+        // List<Skill> skills = skillRepository.findDistinctBy();
+        // System.out.println("List of skills here:");
+        // for(Skill skill : skills) {
+        //     System.out.println(skill.getName());
+        // }
+
+        // return skills;
+        List<String> findDistinctSkillNames = skillRepository.findDistinctSkillNames();
+
+        return findDistinctSkillNames;
     }
 }
