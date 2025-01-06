@@ -75,5 +75,13 @@ public class UserService {
         User user = userRepository.findById(id).get();
         return new UserResponse(user);
     }
+
+    public UserResponse updateDescription(String description) throws Exception{
+        User user = SecurityUtil.getAuthenticated();
+        System.out.println(description);
+        user.setDescription(description);
+        User res = userRepository.save(user);
+        return new UserResponse(res);
+    }
     
 }

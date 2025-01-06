@@ -2,8 +2,10 @@ package com.CCMe.Service;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -12,38 +14,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.CCMe.Configuration.SecurityUtil;
+import com.CCMe.Model.CreateJobRequest;
 import com.CCMe.Model.Job;
-import com.CCMe.Model.JobResponse;
+import com.CCMe.Model.Skill;
 import com.CCMe.Model.Status;
 import com.CCMe.Model.User;
 import com.CCMe.Repository.JobRepository;
+import com.CCMe.Repository.SkillRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class JobServiceImp implements JobService{
-    private JobRepository jobRepo;
+    private final JobRepository jobRepo;
+    private final SkillRepository skillRepository;
 
-    public JobServiceImp(JobRepository jobRepo) {
-        this.jobRepo = jobRepo;
-    }
-
+    
     @Override
     public ResponseEntity<List<Job>> getAll() throws NotFoundException {
         return new ResponseEntity<>(jobRepo.findAll(),HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException {
-        List<Job> arr = jobRepo.findByField(field);
-        return new ResponseEntity<>(arr, HttpStatus.OK);
-    }
+    // @Override
+    // public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException {
+    //     List<Job> arr = jobRepo.findByField(field);
+    //     return new ResponseEntity<>(arr, HttpStatus.OK);
+    // }
 
     @Override
-    public ResponseEntity<Job> create(Job job) throws Exception{
+    public ResponseEntity<Job> create(CreateJobRequest jobRequest) throws Exception{
+        Job job = new Job(jobRequest.getTitle(), jobRequest.getCompany(), jobRequest.getCompany(), jobRequest.getDescription());
         job.setOwner(SecurityUtil.getAuthenticated());
-        job.setStatus(Status.INCOMPLETE);
         job.setDate(new Date());
-        Job res = jobRepo.save(job);
-        return new ResponseEntity<>(res,HttpStatus.OK);
+        // Get full List of Skills
+        List<Skill> _skills = skillRepository.findDistinctBy();
+        List<Skill> skillsToAdd = jobRequest.getSkills();
+        System.out.println("Skills to add " + skillsToAdd);
+        skillsToAdd.removeAll(_skills);
+        skillRepository.saveAll(skillsToAdd);
+        jobRepo.save(job);
+        return ResponseEntity.ok(job);
     }
 
     @Override

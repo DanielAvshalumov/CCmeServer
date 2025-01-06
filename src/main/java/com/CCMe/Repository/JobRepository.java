@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.CCMe.Model.Job;
-import com.CCMe.Model.JobResponse;
 import com.CCMe.Model.User;
 
 @Repository
@@ -43,7 +42,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
 
 
-    List<Job> findByField(String field);
     List<Job> findByOwner(User user);
     Optional<Job> findById(Long id);   
 }

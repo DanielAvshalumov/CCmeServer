@@ -11,6 +11,7 @@ import com.CCMe.Entity.AbstractEntity;
 import com.CCMe.Model.Request.CreateUserRequest;
 import com.CCMe.utils.ApplicationContextProvider;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,6 +36,8 @@ public class User extends AbstractEntity implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
     private String profilePictureUrl;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @OneToOne(mappedBy = "user")
     private VerificationCode verificationCode;    

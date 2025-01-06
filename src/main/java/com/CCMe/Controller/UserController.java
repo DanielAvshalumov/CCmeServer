@@ -66,4 +66,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/update/description")
+    public ResponseEntity<UserResponse> updateDescription(@RequestBody String description) throws Exception{
+        UserResponse userResponse = userService.updateDescription(description);
+        return ResponseEntity.ok(userResponse);
+    }
+
 }

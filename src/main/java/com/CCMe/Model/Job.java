@@ -16,15 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Job extends AbstractEntity{
     
-    private String field;
+    private String title;
 
     private String company;
 
     private String location;
-
-    private Integer views;
-
-    private Integer ccs;
 
     private String description;
 
@@ -40,23 +36,21 @@ public class Job extends AbstractEntity{
 
     private Payment payment;
 
-    public Job(String field, String company, String location, String description) {
+    public Job(String title, String company, String location, String description) {
         System.out.println("Constructor hit");
-        this.field = field;
+        this.title = title;
         this.company = company;
         this.location = location;
-        this.views = 1;
-        this.ccs = 1;
         this.description = description;
         this.status = Status.INCOMPLETE;
     }
 
-    public String getField() {
-        return field;
+    public String getTitle() {
+        return title;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCompany() {
@@ -73,22 +67,6 @@ public class Job extends AbstractEntity{
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Integer getViews() {
-        return views;
-    }
-
-    public void setViews(Integer views) {
-        this.views = views;
-    }
-
-    public Integer getCcs() {
-        return ccs;
-    }
-
-    public void setCcs(Integer ccs) {
-        this.ccs = ccs;
     }
 
     public String getDescription() {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CCMe.Model.Job;
-import com.CCMe.Model.JobResponse;
+import com.CCMe.Model.CreateJobRequest;
 import com.CCMe.Model.Status;
 import com.CCMe.Service.JobService;
 
@@ -49,13 +49,13 @@ public class JobController {
         return ResponseEntity.ok(jobService.getJobsByApplicant(id));
     }
 
-    @GetMapping("/{field}")
-    public ResponseEntity<List<Job>> getJobsByField(@PathVariable("field") String field) throws NotFoundException {
-        return jobService.getJobsByField(field);
-    }
+    // @GetMapping("/{field}")
+    // public ResponseEntity<List<Job>> getJobsByField(@PathVariable("field") String field) throws NotFoundException {
+    //     return jobService.getJobsByField(field);
+    // }
 
     @PostMapping("/create")
-    public ResponseEntity<Job> create(@RequestBody Job job) throws Exception {
+    public ResponseEntity<Job> create(@RequestBody CreateJobRequest job) throws Exception {
         return jobService.create(job);
     }
 

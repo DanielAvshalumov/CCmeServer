@@ -15,6 +15,7 @@ public class UserResponse {
     private String company;
     private boolean isContractor;
     private String profilePictureUrl;
+    private String description;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -25,5 +26,6 @@ public class UserResponse {
         this.company = user.getCompany();
         this.isContractor = user.isContractor();
         this.profilePictureUrl = user.getProfilePictureUrl();
+        this.description = user.getDescription();
     }
 }
