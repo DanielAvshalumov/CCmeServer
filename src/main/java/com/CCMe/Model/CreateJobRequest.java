@@ -1,7 +1,6 @@
 package com.CCMe.Model;
 
 import java.util.List;
-import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +14,5 @@ public class CreateJobRequest {
     private String company;
     private String location;
     private String description;
-    private List<Skill> skills;
+    private List<String> skills;
 }

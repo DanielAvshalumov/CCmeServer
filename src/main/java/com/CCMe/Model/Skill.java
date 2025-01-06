@@ -1,5 +1,7 @@
 package com.CCMe.Model;
 
+import org.springframework.lang.Nullable;
+
 import com.CCMe.Entity.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,9 +21,11 @@ public class Skill extends AbstractEntity{
 
     private String name;
 
-    private int yearsExperience;
+    @Nullable
+    private Integer yearsExperience;
 
     @ManyToOne
     @JsonIgnore
+    @Nullable
     private User user;
 }

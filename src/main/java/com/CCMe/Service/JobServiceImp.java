@@ -48,10 +48,15 @@ public class JobServiceImp implements JobService{
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
         // Get full List of Skills
-        List<Skill> _skills = skillRepository.findDistinctBy();
-        List<Skill> skillsToAdd = jobRequest.getSkills();
-        System.out.println("Skills to add " + skillsToAdd);
-        skillsToAdd.removeAll(_skills);
+        List<String> namesToAdd = jobRequest.getSkills();
+        List<String> allNames = skillRepository.findDistinctBy().stream().map(skill -> {
+            return skill.getName();
+        }).collect(Collectors.toList());
+        // Filter for new skills
+        namesToAdd.removeAll(allNames);
+        List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
+            return new Skill(skill, 0, null);
+        }).collect(Collectors.toList());
         skillRepository.saveAll(skillsToAdd);
         jobRepo.save(job);
         return ResponseEntity.ok(job);
