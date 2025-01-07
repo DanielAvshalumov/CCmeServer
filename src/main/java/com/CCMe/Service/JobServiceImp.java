@@ -77,7 +77,7 @@ public class JobServiceImp implements JobService{
     }
 
     @Override
-    public ResponseEntity<List<Job>> getJobsByOwner(Long id) throws Exception {
+    public ResponseEntity<List<Job>> getJobsByOwner() throws Exception {
         User user = SecurityUtil.getAuthenticated();
         List<Job> jobs = jobRepo.findByOwner(user);
         return new ResponseEntity<>(jobs,HttpStatus.OK);

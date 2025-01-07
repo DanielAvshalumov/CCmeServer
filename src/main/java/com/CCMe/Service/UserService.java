@@ -86,9 +86,18 @@ public class UserService {
         return new UserResponse(res);
     }
 
-    public UserResponse updateProfilePicture(MultipartFile file) throws Exception{
-        User user = SecurityUtil.getAuthenticated();
-        return null;
+    public UserResponse updateProfilePicture(MultipartFile file){
+        try {
+            User user = SecurityUtil.getAuthenticated();
+            String res = s3Service.uploadFile(user.getId(), file);
+            user.setProfilePictureUrl(res);
+            userRepository.save(user);
+            return new UserResponse(user);
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.getStackTrace();
+            return null;
+        }
     }
     
 }

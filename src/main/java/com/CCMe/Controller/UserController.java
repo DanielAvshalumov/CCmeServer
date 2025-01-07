@@ -74,10 +74,27 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @PatchMapping("{id}/profile-picture")
-    public ResponseEntity<UserResponse> updateProfilePicture(@PathVariable Long userId, @RequestParam("file") MultipartFile file) throws Exception{
+    @PatchMapping("/profile-picture")
+    public ResponseEntity<UserResponse> updateProfilePicture(@RequestParam("file") MultipartFile file) throws Exception{
+        System.out.println("Original File Name: "+file.getOriginalFilename());
         UserResponse user = userService.updateProfilePicture(file);
         return ResponseEntity.ok(user);
     }
+
+    // @PatchMapping("/profile-picture")
+    // public String pp(@RequestParam("file") MultipartFile file) {
+    //     try {
+    //         if (file.isEmpty()) {
+    //             return "No file uploaded";
+    //         }
+    //         // Process the file (e.g., save it, etc.)
+    //         System.out.println("File uploaded: " + file.getOriginalFilename());
+    //         return "File uploaded successfully";
+    //     } catch (Exception e) {
+    //         // Log and return a more detailed error message if necessary
+    //         e.printStackTrace();
+    //         return "Error uploading file: " + e.getMessage();
+    //     }
+    // }
 
 }

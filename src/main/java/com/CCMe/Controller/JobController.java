@@ -40,8 +40,8 @@ public class JobController {
     // }
 
     @GetMapping("/user")
-    public ResponseEntity<List<Job>> getJobsByOwner(@RequestParam(name="id") Long id) throws Exception{
-        return jobService.getJobsByOwner(id);
+    public ResponseEntity<List<Job>> getJobsByOwner() throws Exception{
+        return jobService.getJobsByOwner();
     }
 
     @GetMapping("/sender/{id}")
