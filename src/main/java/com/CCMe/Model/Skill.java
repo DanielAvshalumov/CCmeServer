@@ -20,6 +20,8 @@ import lombok.Setter;
 public class Skill extends AbstractEntity{
 
     private String name;
+    @Nullable
+    private String licensePictureURL;
 
     @Nullable
     private Integer yearsExperience;

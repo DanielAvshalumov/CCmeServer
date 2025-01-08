@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.CCMe.Configuration.ApplicationProperties;
 import com.CCMe.Model.Job;
 import com.CCMe.Model.Skill;
 import com.CCMe.Model.User;
@@ -29,6 +30,7 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
     private final SkillRepository skillRepository;
     private final EmailService emailService;
     private final TemplateEngine templateEngine;
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public void run(SendJobAfterCreationEmail jobRequest) throws Exception {
@@ -53,10 +55,11 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
             }
         }
         log.info("Will send an email with the following email: {}",usersToSend);
-        // emailService.sendSimpleEmail(emails, "New Job Alert", "Check out this new job");
         Context ctx = new Context();
+        String applicationLink = applicationProperties.getBaseUrl()+"/applicants/create/"+job.getId();
         ctx.setVariable("company", job.getCompany());
         ctx.setVariable("description", job.getDescription());
+        ctx.setVariable("applicationLink", applicationLink);
         String htmlBody = templateEngine.process("job-after-creation-email", ctx);
         emailService.sendHtmlMessage(emails, "New Job In Your Field", htmlBody);
     }

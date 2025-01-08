@@ -62,7 +62,7 @@ public class JobServiceImp implements JobService{
         // Filter for new skills
         namesToAdd.removeAll(allNames);
         List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
-            return new Skill(skill, 0, null);
+            return new Skill(skill, "" ,0, null);
         }).collect(Collectors.toList());
         skillRepository.saveAll(skillsToAdd);
         Job res = jobRepo.save(job);

@@ -8,8 +8,8 @@
   <title>Job Alert</title>
 </head>
 <body>
-  <p th:text="'Hello' + ${user.firstName} + ', a job has been posted in your domain'"></p>
-  <p th:text="'Welcome to ' + ${applicationName} + ', please click the link below so we can verify your email.'"></p>
-  <a th:href="@{${verificationLink}}">Verify Email</a>
+  <p th:text="'Hello, a job has been posted in your domain'"></p>
+  <p th:text="'We have ' + ${company} + ', offerings a job in your field.'"></p>
+  <a th:href="@{${applicationLink}}">Unlock Company Information</a>
 </body>
 </html>
