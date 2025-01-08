@@ -15,4 +15,5 @@ public interface JobService {
     public ResponseEntity<List<Job>> getJobsByOwner() throws Exception;
     public ResponseEntity<Job> complete(Long jobId);
     public List<Object> getJobsByApplicant(Long id);
+    public ResponseEntity<Job> getJobById(Long id);
 }

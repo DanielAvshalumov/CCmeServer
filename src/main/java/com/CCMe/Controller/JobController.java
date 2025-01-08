@@ -33,6 +33,11 @@ public class JobController {
         return jobService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Job> getJobById(@PathVariable("id") Long id) {
+        return jobService.getJobById(id);
+    }
+
     // @GetMapping("") {
     // public ResponseEntity<List<Job>> getJobsByStatus(@RequestParam(name="status") Status status) {
     //     return jobService.getJobsByStatus

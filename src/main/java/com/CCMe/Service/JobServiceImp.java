@@ -112,4 +112,10 @@ public class JobServiceImp implements JobService{
         System.out.println(jobs);
         return jobs;
     }
+
+    @Override
+    public ResponseEntity<Job> getJobById(Long id) {
+        Job job = jobRepo.findById(id).get();
+        return ResponseEntity.ok(job);
+    }
 }
