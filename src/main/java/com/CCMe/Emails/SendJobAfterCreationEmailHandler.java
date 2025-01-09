@@ -55,7 +55,7 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
         }
         log.info("Will send an email with the following email: {}",usersToSend);
         Context ctx = new Context();
-        String applicationLink = "http://localhost:3000/dashboard/jobs?id="+job.getId();
+        String applicationLink = "http://localhost:3000/dashboard/jobs/"+job.getId();
         ctx.setVariable("company", job.getCompany());
         ctx.setVariable("description", job.getDescription());
         ctx.setVariable("applicationLink", applicationLink);

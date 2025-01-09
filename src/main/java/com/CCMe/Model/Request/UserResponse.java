@@ -16,6 +16,7 @@ public class UserResponse {
     private boolean isContractor;
     private String profilePictureUrl;
     private String description;
+    private String phoneNumber;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -27,5 +28,6 @@ public class UserResponse {
         this.isContractor = user.isContractor();
         this.profilePictureUrl = user.getProfilePictureUrl();
         this.description = user.getDescription();
+        this.phoneNumber = user.getPhoneNumber();
     }
 }
