@@ -34,12 +34,13 @@ public class Job extends AbstractEntity{
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
+    private Date startDate;
+
     private Payment payment;
 
-    public Job(String title, String company, String location, String description) {
+    public Job(Date startDate, String location, String description) {
         System.out.println("Constructor hit");
-        this.title = title;
-        this.company = company;
+        this.startDate = startDate;
         this.location = location;
         this.description = description;
         this.status = Status.INCOMPLETE;

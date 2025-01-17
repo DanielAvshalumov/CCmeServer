@@ -1,12 +1,8 @@
 package com.CCMe.Service;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jobrunr.scheduling.BackgroundJobRequest;
@@ -14,6 +10,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Emails.SendJobAfterCreationEmail;
@@ -22,6 +19,7 @@ import com.CCMe.Model.Job;
 import com.CCMe.Model.Skill;
 import com.CCMe.Model.Status;
 import com.CCMe.Model.User;
+import com.CCMe.Model.Request.GeocodeResponse;
 import com.CCMe.Repository.JobRepository;
 import com.CCMe.Repository.SkillRepository;
 
@@ -32,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class JobServiceImp implements JobService{
     private final JobRepository jobRepo;
     private final SkillRepository skillRepository;
+    private final GeocodeService geocodeService;
 
     
     @Override
@@ -47,7 +46,7 @@ public class JobServiceImp implements JobService{
 
     @Override
     public ResponseEntity<Job> create(CreateJobRequest jobRequest) throws Exception{
-        Job job = new Job(jobRequest.getTitle(), jobRequest.getCompany(), jobRequest.getCompany(), jobRequest.getDescription());
+        Job job = new Job(jobRequest.getStartDate(), jobRequest.getLocation(), jobRequest.getDescription());
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
         // Get full List of Skills
@@ -67,12 +66,23 @@ public class JobServiceImp implements JobService{
         skillRepository.saveAll(skillsToAdd);
         Job res = jobRepo.save(job);
         // Send email alert to those with the skills
-        sendJobAfterCreationEmail(skillsToParse,res);
+        GeocodeResponse _res = geocodeService.getCoordinates(jobRequest.getLocation());
+        String latitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLat());
+        String longitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLng());
+        System.out.println("coordinates "+latitude+" "+longitude);
+        String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
+            .queryParam("markers",latitude+","+longitude)
+            .queryParam("size","600x400")
+            .queryParam("key","AIzaSyDn59NgA0kr5b-LvHOL7UFAaCa1yYp0MSM")
+            .queryParam("zoom","14").toUriString();
+        System.out.println(miniMap);
+        sendJobAfterCreationEmail(skillsToParse,res,miniMap);
         return ResponseEntity.ok(job);
     }
 
-    private void sendJobAfterCreationEmail(List<String> names, Job job) {
-        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job);
+
+    private void sendJobAfterCreationEmail(List<String> names, Job job, String map) {
+        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job, map);
         BackgroundJobRequest.enqueue(sendJobAferCreationEmail);
     }
 

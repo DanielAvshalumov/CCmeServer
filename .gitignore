@@ -34,3 +34,4 @@ local.properties
 
 # Environment Vars
 .env
+start.bash

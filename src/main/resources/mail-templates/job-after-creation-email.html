@@ -10,6 +10,7 @@
 <body>
   <p th:text="'Hello, a job has been posted in your domain'"></p>
   <p th:text="'We have ' + ${company} + ', offerings a job in your field.'"></p>
+  <img th:src="@{${map}}">
   <a th:href="@{${applicationLink}}">Unlock Company Information</a>
 </body>
 </html>

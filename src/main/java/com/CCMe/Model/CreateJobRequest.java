@@ -1,5 +1,6 @@
 package com.CCMe.Model;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -10,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateJobRequest {
-    private String title;
-    private String company;
     private String location;
     private String description;
     private List<String> skills;
+    private Date startDate;
 }

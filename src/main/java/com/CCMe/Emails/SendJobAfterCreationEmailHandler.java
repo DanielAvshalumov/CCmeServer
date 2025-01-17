@@ -33,10 +33,10 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
 
     @Override
     public void run(SendJobAfterCreationEmail jobRequest) throws Exception {
-        sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJob());
+        sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJob(), jobRequest.getMap());
     }
     
-    private void sendJobAfterCreationEmail(List<String> names, Job job) {
+    private void sendJobAfterCreationEmail(List<String> names, Job job, String map) {
         List<String> emails = new ArrayList<>();
         List<Skill> userSkills = skillRepository.findByNameIn(names);
         List<User> usersToSend = userSkills.stream().map(user -> {
@@ -59,6 +59,7 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
         ctx.setVariable("company", job.getCompany());
         ctx.setVariable("description", job.getDescription());
         ctx.setVariable("applicationLink", applicationLink);
+        ctx.setVariable("map", map);
         String htmlBody = templateEngine.process("job-after-creation-email", ctx);
         emailService.sendHtmlMessage(emails, "New Job In Your Field", htmlBody);
     }

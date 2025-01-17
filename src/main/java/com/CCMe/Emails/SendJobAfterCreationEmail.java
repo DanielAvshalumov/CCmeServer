@@ -16,6 +16,7 @@ public class SendJobAfterCreationEmail implements JobRequest{
     
     private List<String> emails;
     private Job job;
+    private String map;
 
     @SuppressWarnings("rawtypes")
     @Override
