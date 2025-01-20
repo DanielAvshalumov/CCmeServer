@@ -28,6 +28,7 @@ public class ApplicantService {
     public Applicant create(Long id) throws Exception {
         Job contractor = jobRepository.findById(id).get();
         User sender = SecurityUtil.getAuthenticated();
+        // Owners can't apply to their own jobs, and contractor+sender = candidate key
         if(contractor.getOwner().getId() == sender.getId() || applicantRepository.existsByContractorAndSender(contractor,sender)) {
             return null;
         }
@@ -48,5 +49,18 @@ public class ApplicantService {
             app.getContractor().setStatus(Status.ONGOING);
         }
         return applicantRepository.save(app);
+    }
+
+    public List<Applicant> getApplicantsByUser(Long id) {
+        try {
+            User user = SecurityUtil.getAuthenticated();
+            List<Applicant> applicants = applicantRepository.findAllBySender(user);
+            return applicants;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
     }
 }

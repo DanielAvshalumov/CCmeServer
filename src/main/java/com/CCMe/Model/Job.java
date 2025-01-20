@@ -109,4 +109,12 @@ public class Job extends AbstractEntity{
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
+    public Date getStarDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 }

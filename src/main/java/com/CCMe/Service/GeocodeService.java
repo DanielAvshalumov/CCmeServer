@@ -1,5 +1,6 @@
 package com.CCMe.Service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class GeocodeService {
+
+    @Value("${GOOGLE_PUBLIC_KEY}")
+    private String apiKey;
     
     @Bean
     public RestTemplate restTemplate() {
@@ -20,7 +24,6 @@ public class GeocodeService {
 
     public GeocodeResponse getCoordinates(String zipCode) {
         RestTemplate restTemplate = restTemplate();
-        String apiKey = "AIzaSyDn59NgA0kr5b-LvHOL7UFAaCa1yYp0MSM";
         String geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(geocodeUrl)

@@ -24,6 +24,11 @@ public class ApplicantController {
 
     private final ApplicantService applicantService;
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Applicant>> getApplicantsByUser(@PathVariable("id") Long id){
+        return ResponseEntity.ok(applicantService.getApplicantsByUser(id));
+    }
+
     @GetMapping("/job/{id}")
     public ResponseEntity<List<Applicant>> getApplicantsByJob(@PathVariable("id") Long id) {
         return ResponseEntity.ok(applicantService.getApplicantsByJob(id));

@@ -16,4 +16,5 @@ public interface ApplicantRepository extends JpaRepository<Applicant,Long>{
     // @Query(value="SELECET COUNT(DISTINCT contractor_id,sender_id) FROM applicant where contractor_id=?1 and sender_id=?2", nativeQuery=true)
     // Integer existsApplicant(Long senderId, Long contractorId);
     Boolean existsByContractorAndSender(Job contractor, User sender);
+    List<Applicant> findAllBySender(User sender);
 }

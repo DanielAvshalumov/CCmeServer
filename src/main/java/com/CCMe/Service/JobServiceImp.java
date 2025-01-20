@@ -73,7 +73,7 @@ public class JobServiceImp implements JobService{
         String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
             .queryParam("markers",latitude+","+longitude)
             .queryParam("size","600x400")
-            .queryParam("key","AIzaSyDn59NgA0kr5b-LvHOL7UFAaCa1yYp0MSM")
+            .queryParam("key","")
             .queryParam("zoom","14").toUriString();
         System.out.println(miniMap);
         sendJobAfterCreationEmail(skillsToParse,res,miniMap);
