@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class GeocodeService {
+public class GoogleService {
 
     @Value("${GOOGLE_PUBLIC_KEY}")
     private String apiKey;
@@ -22,7 +22,7 @@ public class GeocodeService {
         return new RestTemplate();
     }
 
-    public GeocodeResponse getCoordinates(String zipCode) {
+    public String getMiniMap(String zipCode) {
         RestTemplate restTemplate = restTemplate();
         String geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
 
@@ -30,6 +30,17 @@ public class GeocodeService {
             .queryParam("address", zipCode)
             .queryParam("key", apiKey);
         
-        return restTemplate.getForObject(uriBuilder.toUriString(), GeocodeResponse.class);
+        GeocodeResponse res = restTemplate.getForObject(uriBuilder.toUriString(), GeocodeResponse.class);
+        String latitude = Double.toString(res.getResults().getFirst().getGeometry().getLocation().getLat());
+        String longitude = Double.toString(res.getResults().getFirst().getGeometry().getLocation().getLng());
+        System.out.println("coordinates "+latitude+" "+longitude);
+        String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
+            .queryParam("markers",latitude+","+longitude)
+            .queryParam("size","600x400")
+            .queryParam("key",apiKey)
+            .queryParam("zoom","14").toUriString();
+        System.out.println(miniMap);
+        return miniMap;
     }
+
 }

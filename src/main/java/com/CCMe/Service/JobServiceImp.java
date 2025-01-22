@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class JobServiceImp implements JobService{
     private final JobRepository jobRepo;
     private final SkillRepository skillRepository;
-    private final GeocodeService geocodeService;
+    private final GoogleService googleService;
 
     
     @Override
@@ -65,17 +65,18 @@ public class JobServiceImp implements JobService{
         }).collect(Collectors.toList());
         skillRepository.saveAll(skillsToAdd);
         Job res = jobRepo.save(job);
+        String miniMap = googleService.getMiniMap(jobRequest.getLocation());
         // Send email alert to those with the skills
-        GeocodeResponse _res = geocodeService.getCoordinates(jobRequest.getLocation());
-        String latitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLat());
-        String longitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLng());
-        System.out.println("coordinates "+latitude+" "+longitude);
-        String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
-            .queryParam("markers",latitude+","+longitude)
-            .queryParam("size","600x400")
-            .queryParam("key","")
-            .queryParam("zoom","14").toUriString();
-        System.out.println(miniMap);
+        // GeocodeResponse _res = geocodeService.getCoordinates(jobRequest.getLocation());
+        // String latitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLat());
+        // String longitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLng());
+        // System.out.println("coordinates "+latitude+" "+longitude);
+        // String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
+        //     .queryParam("markers",latitude+","+longitude)
+        //     .queryParam("size","600x400")
+        //     .queryParam("key","")
+        //     .queryParam("zoom","14").toUriString();
+        // System.out.println(miniMap);
         sendJobAfterCreationEmail(skillsToParse,res,miniMap);
         return ResponseEntity.ok(job);
     }
