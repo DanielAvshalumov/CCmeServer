@@ -35,15 +35,16 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
 
     @Override
     public void run(SendJobAfterCreationEmail jobRequest) throws Exception {
-        sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJob(), jobRequest.getMap());
+        sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJobId(), jobRequest.getMap(), jobRequest.getCompany(), jobRequest.getDescription());
     }
     
-    private void sendJobAfterCreationEmail(List<String> names, Job job, String map) {
-        // List<String> emails = new ArrayList<>();
+    private void sendJobAfterCreationEmail(List<String> names, Long jobId, String map, String company, String description) {
+        List<String> emails = new ArrayList<>();
         // List<Skill> userSkills = skillRepository.findByNameIn(names);
         // List<User> usersToSend = userSkills.stream().map(user -> {
         //     return user.getUser();
         // }).collect(Collectors.toList());
+        // List<User> usersToSend = userRepository.findUsersBySkill(userSkills.stream().map(skill -> {return skill.getId();}).collect(Collectors.toList()));
         // System.out.println(userSkills.size());
         // for(int i = 0; i < userSkills.size(); i++) {
         //     try {
@@ -56,15 +57,16 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
         //     }
         // }
         // log.info("Will send an email with the following email: {}",usersToSend);
-        // Context ctx = new Context();
-        // String applicationLink = "http://localhost:3000/dashboard/jobs/"+job.getId();
-        // ctx.setVariable("company", job.getCompany());
-        // ctx.setVariable("description", job.getDescription());
-        // ctx.setVariable("applicationLink", applicationLink);
-        // ctx.setVariable("map", map);
-        // String htmlBody = templateEngine.process("job-after-creation-email", ctx);
-        // Set<String> emailSet = new HashSet<>(emails);
-        // emailService.sendHtmlMessage(emailSet, "New Job In Your Field", htmlBody);
+        Context ctx = new Context();
+        String applicationLink = "http://localhost:3000/dashboard/jobs/"+Long.toString(jobId);
+        ctx.setVariable("company", company);
+        ctx.setVariable("description", description);
+        ctx.setVariable("applicationLink", applicationLink);
+        ctx.setVariable("map", map);
+        emails.add("avshalumov.daniel@gmail.com");
+        String htmlBody = templateEngine.process("job-after-creation-email", ctx);
+        Set<String> emailSet = new HashSet<>(emails);
+        emailService.sendHtmlMessage(emailSet, "New Job In Your Field", htmlBody);
     }
 
 }

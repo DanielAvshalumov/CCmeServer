@@ -18,6 +18,7 @@ import com.CCMe.Model.VerificationCode;
 import com.CCMe.Model.Request.CreateUserRequest;
 import com.CCMe.Model.Request.UpdateUserRequest;
 import com.CCMe.Model.Request.UserResponse;
+import com.CCMe.Repository.SkillRepository;
 import com.CCMe.Repository.UserRepository;
 import com.CCMe.Repository.VerificationCodeRepository;
 
@@ -30,6 +31,7 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final VerificationCodeRepository verificationRepository;
+    private final SkillRepository skillRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -103,11 +105,12 @@ public class UserService {
         return res;
     }
 
+    @Transactional
     public User addSkill(Skill skill) {
         try {
             User user = SecurityUtil.getAuthenticated();
             
-            user.addSkill(skill);
+            user.addSkill(skillRepository.save(skill));
             userRepository.save(user);
             return user;
         } catch (Exception e) {
@@ -123,7 +126,7 @@ public class UserService {
         try {
             User user = SecurityUtil.getAuthenticated();
             List<Skill> skills = user.getSkills();
-            String res = s3Service.uploadFile(file, null);
+            String res = s3Service.uploadFile(file, id);
             Skill _res = null;
             for(int i = 0; i < skills.size(); i++) {
                 if(skills.get(i).getId() == id) {
@@ -132,6 +135,7 @@ public class UserService {
                     break;
                 }
             }
+            skillRepository.save(_res);
             userRepository.save(user);
             return _res;
         } catch (Exception e) {

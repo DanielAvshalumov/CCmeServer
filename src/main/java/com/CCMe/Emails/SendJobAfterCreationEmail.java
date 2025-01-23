@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class SendJobAfterCreationEmail implements JobRequest{
     
     private List<String> emails;
-    private Job job;
+    private Long jobId;
     private String map;
 
     @SuppressWarnings("rawtypes")

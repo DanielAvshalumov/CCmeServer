@@ -30,9 +30,9 @@ public class S3Service {
     private final S3Client s3Client;
     private final UserRepository userRepository;
 
-    public String uploadFile(MultipartFile file, Skill skill) throws Exception {
+    public String uploadFile(MultipartFile file, Long id) throws Exception {
         User user = SecurityUtil.getAuthenticated();
-        String keyName = Long.toString(user.getId())+"/license/"+Long.toString(skill.getId())+'/'+file.getOriginalFilename();
+        String keyName = Long.toString(user.getId())+"/license/"+Long.toString(id)+'/'+file.getOriginalFilename();
         try {
             s3Client.putObject(PutObjectRequest.builder()
                 .bucket(BUCKET_NAME)

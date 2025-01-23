@@ -82,7 +82,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @PutMapping("/add-skill-picture/{id}")
+    @PatchMapping("/add-skill-picture/{skillId}")
     public ResponseEntity<Skill> updateSkillPicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {
         Skill res = userService.updateSkillPicture(id,file);
         return ResponseEntity.ok(res);

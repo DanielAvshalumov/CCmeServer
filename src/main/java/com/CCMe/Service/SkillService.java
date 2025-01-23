@@ -30,19 +30,19 @@ public class SkillService {
     //     return skillRepository.save(skill);
     // }
 
-    @Transactional
-    public Skill addLicensePicture(Long skillId, MultipartFile file) {
-        try {
-            Skill skill = skillRepository.findById(skillId).get();
-            String res = s3Service.uploadFile(file, skill);
-            skill.setLicensePictureURL(res);
-            return skillRepository.save(skill);
-        } catch(Exception e) {
-            e.getStackTrace();
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
+    // @Transactional
+    // public Skill addLicensePicture(Long skillId, MultipartFile file) {
+    //     try {
+    //         Skill skill = skillRepository.findById(skillId).get();
+    //         String res = s3Service.uploadFile(file, skill);
+    //         skill.setLicensePictureURL(res);
+    //         return skillRepository.save(skill);
+    //     } catch(Exception e) {
+    //         e.getStackTrace();
+    //         System.out.println(e.getMessage());
+    //         return null;
+    //     }
+    // }
 
     public List<Skill> getUserSkills() {
         // try {

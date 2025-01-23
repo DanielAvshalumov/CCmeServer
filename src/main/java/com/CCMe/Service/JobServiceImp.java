@@ -12,6 +12,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.CCMe.Configuration.SecurityUtil;
@@ -47,28 +48,35 @@ public class JobServiceImp implements JobService{
     // }
 
     @Override
+    @Transactional
     public ResponseEntity<Job> create(CreateJobRequest jobRequest) throws Exception{
         Job job = new Job(jobRequest.getStartDate(), jobRequest.getLocation(), jobRequest.getDescription());
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
         // Get full List of Skills
+        
+        //
+
+        // List<String> skillsToParse = new ArrayList<>();
+        // List<String> namesToAdd = jobRequest.getSkills();
+        // for(String name : namesToAdd) {
+        //     skillsToParse.add(name);
+        // }
+        // List<String> allNames = skillRepository.findDistinctBy().stream().map(skill -> {
+        //     return skill.getName();
+        // }).collect(Collectors.toList());
+        // // Filter for new skills
+        // namesToAdd.removeAll(allNames);
+        // List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
+        //     return new Skill(skill, "" ,0);
+        // }).collect(Collectors.toList());
+        // Set<Skill> set = new HashSet<>(skillsToAdd);
+        // skillRepository.saveAll(skillsToAdd);
         List<String> skillsToParse = new ArrayList<>();
-        List<String> namesToAdd = jobRequest.getSkills();
-        for(String name : namesToAdd) {
-            skillsToParse.add(name);
-        }
-        List<String> allNames = skillRepository.findDistinctBy().stream().map(skill -> {
-            return skill.getName();
-        }).collect(Collectors.toList());
-        // Filter for new skills
-        namesToAdd.removeAll(allNames);
-        List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
-            return new Skill(skill, "" ,0);
-        }).collect(Collectors.toList());
-        Set<Skill> set = new HashSet<>(skillsToAdd);
-        skillRepository.saveAll(skillsToAdd);
+        skillsToParse.add("Lover");
         Job res = jobRepo.save(job);
         String miniMap = googleService.getMiniMap(jobRequest.getLocation());
+        // System.out.println(String.format("Params:\nSkills to Parse: %s", String.join(", ",skillsToParse)));
         // Send email alert to those with the skills
         // GeocodeResponse _res = geocodeService.getCoordinates(jobRequest.getLocation());
         // String latitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLat());
@@ -85,8 +93,8 @@ public class JobServiceImp implements JobService{
     }
 
 
-    private void sendJobAfterCreationEmail(List<String> names, Job job, String map) {
-        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job, map);
+    private void sendJobAfterCreationEmail(List<String> names, Job job, String map)  {
+        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job.getId(), map, job.getCompany(), job.getDescription());
         BackgroundJobRequest.enqueue(sendJobAferCreationEmail);
     }
 

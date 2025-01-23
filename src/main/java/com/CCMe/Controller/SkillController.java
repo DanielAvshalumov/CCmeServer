@@ -43,9 +43,9 @@ public class SkillController {
     //     return ResponseEntity.ok(res);
     // }
 
-    @PatchMapping("/license-picture/{skillId}")
-    public ResponseEntity<Skill> updateLicensePicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {
-        Skill res = skillService.addLicensePicture(id,file);
-        return ResponseEntity.ok(res);
-    }
+    // @PatchMapping("/license-picture/{skillId}")
+    // public ResponseEntity<Skill> updateLicensePicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {
+    //     Skill res = skillService.addLicensePicture(id,file);
+    //     return ResponseEntity.ok(res);
+    // }
 }
