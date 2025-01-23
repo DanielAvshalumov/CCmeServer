@@ -1,7 +1,10 @@
 package com.CCMe.Model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +14,14 @@ import com.CCMe.Entity.AbstractEntity;
 import com.CCMe.Model.Request.CreateUserRequest;
 import com.CCMe.utils.ApplicationContextProvider;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,9 +45,11 @@ public class User extends AbstractEntity implements UserDetails{
     private String profilePictureUrl;
     @Column(columnDefinition = "TEXT")
     private String description;
-
     @OneToOne(mappedBy = "user")
-    private VerificationCode verificationCode;    
+    private VerificationCode verificationCode;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Skill> skills;    
+    // private String test;
 
     public User(CreateUserRequest userReq) {
         PasswordEncoder passwordEncoder = ApplicationContextProvider.bean(PasswordEncoder.class);
@@ -52,6 +61,7 @@ public class User extends AbstractEntity implements UserDetails{
         this.role = Role.USER;
         this.isContractor = userReq.isContractor();
         this.phoneNumber = userReq.getPhoneNumber();
+        // this.skills = new ArrayList<>();
     }
 
     @Override
@@ -62,6 +72,10 @@ public class User extends AbstractEntity implements UserDetails{
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void addSkill(Skill skill) {
+        skills.add(skill);
     }
 
 }

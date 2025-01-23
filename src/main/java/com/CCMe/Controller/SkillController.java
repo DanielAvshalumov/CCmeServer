@@ -37,11 +37,11 @@ public class SkillController {
         return ResponseEntity.ok(res);
     }
     
-    @PostMapping("/create")
-    public ResponseEntity<Skill> create(@RequestBody Skill skill) throws Exception {
-        Skill res = skillService.create(skill);
-        return ResponseEntity.ok(res);
-    }
+    // @PostMapping("/create")
+    // public ResponseEntity<Skill> create(@RequestBody Skill skill) throws Exception {
+    //     Skill res = skillService.create(skill);
+    //     return ResponseEntity.ok(res);
+    // }
 
     @PatchMapping("/license-picture/{skillId}")
     public ResponseEntity<Skill> updateLicensePicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {

@@ -2,7 +2,9 @@ package com.CCMe.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jobrunr.scheduling.BackgroundJobRequest;
@@ -61,8 +63,9 @@ public class JobServiceImp implements JobService{
         // Filter for new skills
         namesToAdd.removeAll(allNames);
         List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
-            return new Skill(skill, "" ,0, null);
+            return new Skill(skill, "" ,0);
         }).collect(Collectors.toList());
+        Set<Skill> set = new HashSet<>(skillsToAdd);
         skillRepository.saveAll(skillsToAdd);
         Job res = jobRepo.save(job);
         String miniMap = googleService.getMiniMap(jobRequest.getLocation());

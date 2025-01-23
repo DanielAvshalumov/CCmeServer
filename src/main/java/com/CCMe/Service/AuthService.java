@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.CCMe.Configuration.SecurityUtil;
+import com.CCMe.Model.Skill;
 import com.CCMe.Model.User;
 import com.CCMe.Model.Request.LogInRequest;
 import com.CCMe.Model.Request.UserResponse;
@@ -53,6 +54,9 @@ public class AuthService {
     public UserResponse getSession(HttpServletRequest req) throws Exception {
         User user = SecurityUtil.getAuthenticated();
         userRepository.getReferenceById(user.getId());
+        for(Skill skill : user.getSkills()) {
+            System.out.println(skill.getId());
+        }
         return new UserResponse(user);
     }
 

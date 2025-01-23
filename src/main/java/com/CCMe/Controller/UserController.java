@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.CCMe.Configuration.ApplicationProperties;
+import com.CCMe.Model.Skill;
 import com.CCMe.Model.Request.CreateUserRequest;
 import com.CCMe.Model.Request.ForgotPasswordRequest;
 import com.CCMe.Model.Request.UpdateUserRequest;
@@ -32,16 +33,17 @@ public class UserController {
     private final UserService userService;
     private final ApplicationProperties applicationProperties;
 
-    @GetMapping("/")
-    public ResponseEntity<List<UserResponse>> getAllNonContractors(@RequestParam(name="iscontractor") boolean isContractor) {
-        List<UserResponse> res = userService.getAllNonContractors(isContractor);
-        return ResponseEntity.ok(res);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
         UserResponse user = userService.getUser(id);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<UserResponse>> searchContractors(@RequestParam String query) {
+        List<UserResponse> res = userService.searchContractors(query);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/create")
@@ -54,6 +56,12 @@ public class UserController {
     public ResponseEntity<Void> verifyEmail(@RequestParam(name="code") String code) {
         userService.verifyEmail(code);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/add-skill")
+    public ResponseEntity<UserResponse> addSkill(@RequestBody Skill skill) {
+        UserResponse user = new UserResponse(userService.addSkill(skill));
+        return ResponseEntity.ok(user);
     }
 
     // @PostMapping("/forgot-password")
@@ -72,6 +80,12 @@ public class UserController {
     public ResponseEntity<UserResponse> updateDescription(@RequestBody String description) throws Exception{
         UserResponse userResponse = userService.updateDescription(description);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @PutMapping("/add-skill-picture/{id}")
+    public ResponseEntity<Skill> updateSkillPicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {
+        Skill res = userService.updateSkillPicture(id,file);
+        return ResponseEntity.ok(res);
     }
 
     @PatchMapping("/profile-picture")

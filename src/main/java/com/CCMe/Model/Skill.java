@@ -26,8 +26,8 @@ public class Skill extends AbstractEntity{
     @Nullable
     private Integer yearsExperience;
 
-    @ManyToOne
-    @JsonIgnore
-    @Nullable
-    private User user;
+    // @ManyToOne
+    // @JsonIgnore
+    // @Nullable
+    // private User user;
 }

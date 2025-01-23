@@ -1,6 +1,7 @@
 package com.CCMe.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,6 +21,19 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     public void sendHtmlMessage(List<String> to, String subject, String htmlBody) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(to.toArray(new String[0]));
+            helper.setSubject(subject);
+            helper.setText(htmlBody, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending email", e);
+        }
+    }
+
+    public void sendHtmlMessage(Set<String> to, String subject, String htmlBody) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

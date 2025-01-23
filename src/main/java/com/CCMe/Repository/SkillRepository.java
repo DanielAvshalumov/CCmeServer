@@ -11,7 +11,7 @@ import com.CCMe.Model.User;
 
 @Repository
 public interface SkillRepository extends JpaRepository<Skill, Long>{
-    List<Skill> findAllByUser(User user);
+    // List<Skill> findAllByUser(User user);
 
     List<Skill> findDistinctBy();
 

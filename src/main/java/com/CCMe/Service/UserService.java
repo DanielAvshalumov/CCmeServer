@@ -1,15 +1,18 @@
 package com.CCMe.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.jobrunr.scheduling.BackgroundJobRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Emails.SendWelcomeEmail;
+import com.CCMe.Model.Skill;
 import com.CCMe.Model.User;
 import com.CCMe.Model.VerificationCode;
 import com.CCMe.Model.Request.CreateUserRequest;
@@ -18,7 +21,6 @@ import com.CCMe.Model.Request.UserResponse;
 import com.CCMe.Repository.UserRepository;
 import com.CCMe.Repository.VerificationCodeRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,7 @@ public class UserService {
     @Transactional
     public UserResponse create(@Valid CreateUserRequest req) {
         User user = new User(req);
+        user.setSkills(new ArrayList<>());
         user = userRepository.save(user);
         sendVerificationEmail(user);
         return new UserResponse(user);
@@ -55,15 +58,6 @@ public class UserService {
         verificationRepository.delete(verificationCode);
     }
 
-
-    public List<UserResponse> getAllNonContractors(boolean isContractor) {
-        List<UserResponse> nonContractors = 
-        userRepository.findByIsContractor(isContractor)
-            .stream()
-            .map(user -> {return new UserResponse(user);})
-            .collect(Collectors.toList());
-        return nonContractors;
-    }
 
     @Transactional
     public UserResponse update(UpdateUserRequest updateUserRequest) throws Exception {
@@ -98,6 +92,54 @@ public class UserService {
             ex.getStackTrace();
             return null;
         }
+    }
+
+    public List<UserResponse> searchContractors(String query) {
+        List<User> contractors = userRepository.findAllByisContractorTrueAndfirstNameLike(query);
+        List<UserResponse> res = contractors.stream().map(contractor -> {
+            return new UserResponse(contractor);
+        }).collect(Collectors.toList());
+        
+        return res;
+    }
+
+    public User addSkill(Skill skill) {
+        try {
+            User user = SecurityUtil.getAuthenticated();
+            
+            user.addSkill(skill);
+            userRepository.save(user);
+            return user;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    @Transactional
+    public Skill updateSkillPicture(Long id, MultipartFile file) {
+        try {
+            User user = SecurityUtil.getAuthenticated();
+            List<Skill> skills = user.getSkills();
+            String res = s3Service.uploadFile(file, null);
+            Skill _res = null;
+            for(int i = 0; i < skills.size(); i++) {
+                if(skills.get(i).getId() == id) {
+                    _res = skills.get(i);
+                    skills.get(i).setLicensePictureURL(res);
+                    break;
+                }
+            }
+            userRepository.save(user);
+            return _res;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
     }
     
 }
