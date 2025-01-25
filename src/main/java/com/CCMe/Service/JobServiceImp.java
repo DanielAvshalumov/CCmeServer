@@ -25,6 +25,7 @@ import com.CCMe.Model.User;
 import com.CCMe.Model.Request.GeocodeResponse;
 import com.CCMe.Repository.JobRepository;
 import com.CCMe.Repository.SkillRepository;
+import com.CCMe.Repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JobServiceImp implements JobService{
     private final JobRepository jobRepo;
-    private final SkillRepository skillRepository;
+    private final UserRepository userRepository;
     private final GoogleService googleService;
 
     
@@ -41,60 +42,25 @@ public class JobServiceImp implements JobService{
         return new ResponseEntity<>(jobRepo.findAll(),HttpStatus.OK);
     }
 
-    // @Override
-    // public ResponseEntity<List<Job>> getJobsByField(String field) throws NotFoundException {
-    //     List<Job> arr = jobRepo.findByField(field);
-    //     return new ResponseEntity<>(arr, HttpStatus.OK);
-    // }
-
     @Override
     @Transactional
     public ResponseEntity<Job> create(CreateJobRequest jobRequest) throws Exception{
         Job job = new Job(jobRequest.getStartDate(), jobRequest.getLocation(), jobRequest.getDescription());
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
-        // Get full List of Skills
+        List<String> skillNames = jobRequest.getSkills();
+        List<String> emails = userRepository.getUsersInSkill(skillNames);
         
-        //
-
-        // List<String> skillsToParse = new ArrayList<>();
-        // List<String> namesToAdd = jobRequest.getSkills();
-        // for(String name : namesToAdd) {
-        //     skillsToParse.add(name);
-        // }
-        // List<String> allNames = skillRepository.findDistinctBy().stream().map(skill -> {
-        //     return skill.getName();
-        // }).collect(Collectors.toList());
-        // // Filter for new skills
-        // namesToAdd.removeAll(allNames);
-        // List<Skill> skillsToAdd = namesToAdd.stream().map(skill -> {
-        //     return new Skill(skill, "" ,0);
-        // }).collect(Collectors.toList());
-        // Set<Skill> set = new HashSet<>(skillsToAdd);
-        // skillRepository.saveAll(skillsToAdd);
-        List<String> skillsToParse = new ArrayList<>();
-        skillsToParse.add("Lover");
         Job res = jobRepo.save(job);
         String miniMap = googleService.getMiniMap(jobRequest.getLocation());
-        // System.out.println(String.format("Params:\nSkills to Parse: %s", String.join(", ",skillsToParse)));
-        // Send email alert to those with the skills
-        // GeocodeResponse _res = geocodeService.getCoordinates(jobRequest.getLocation());
-        // String latitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLat());
-        // String longitude = Double.toString(_res.getResults().getFirst().getGeometry().getLocation().getLng());
-        // System.out.println("coordinates "+latitude+" "+longitude);
-        // String miniMap = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/staticmap")
-        //     .queryParam("markers",latitude+","+longitude)
-        //     .queryParam("size","600x400")
-        //     .queryParam("key","")
-        //     .queryParam("zoom","14").toUriString();
-        // System.out.println(miniMap);
-        sendJobAfterCreationEmail(skillsToParse,res,miniMap);
+        
+        sendJobAfterCreationEmail(emails,res,miniMap);
         return ResponseEntity.ok(job);
     }
 
 
-    private void sendJobAfterCreationEmail(List<String> names, Job job, String map)  {
-        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(names, job.getId(), map, job.getCompany(), job.getDescription());
+    private void sendJobAfterCreationEmail(List<String> emails, Job job, String map)  {
+        SendJobAfterCreationEmail sendJobAferCreationEmail = new SendJobAfterCreationEmail(emails, job.getId(), map, job.getCompany(), job.getDescription());
         BackgroundJobRequest.enqueue(sendJobAferCreationEmail);
     }
 

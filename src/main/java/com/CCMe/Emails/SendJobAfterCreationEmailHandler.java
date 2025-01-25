@@ -38,25 +38,7 @@ public class SendJobAfterCreationEmailHandler implements JobRequestHandler<SendJ
         sendJobAfterCreationEmail(jobRequest.getEmails(), jobRequest.getJobId(), jobRequest.getMap(), jobRequest.getCompany(), jobRequest.getDescription());
     }
     
-    private void sendJobAfterCreationEmail(List<String> names, Long jobId, String map, String company, String description) {
-        List<String> emails = new ArrayList<>();
-        // List<Skill> userSkills = skillRepository.findByNameIn(names);
-        // List<User> usersToSend = userSkills.stream().map(user -> {
-        //     return user.getUser();
-        // }).collect(Collectors.toList());
-        // List<User> usersToSend = userRepository.findUsersBySkill(userSkills.stream().map(skill -> {return skill.getId();}).collect(Collectors.toList()));
-        // System.out.println(userSkills.size());
-        // for(int i = 0; i < userSkills.size(); i++) {
-        //     try {
-        //         System.out.println("UserSkills " + userSkills.get(i).getName());
-        //         System.out.println("UsersToSend " + usersToSend.get(i).getEmail());
-        //         emails.add(usersToSend.get(i).getEmail());
-        //     } catch(NullPointerException ex) {
-        //         System.out.println("Adding Skill: " + userSkills.get(i).getName());
-        //         // TODO: Implement logic new Skills and who to send these jobs to 
-        //     }
-        // }
-        // log.info("Will send an email with the following email: {}",usersToSend);
+    private void sendJobAfterCreationEmail(List<String> emails, Long jobId, String map, String company, String description) {
         Context ctx = new Context();
         String applicationLink = "http://localhost:3000/dashboard/jobs/"+Long.toString(jobId);
         ctx.setVariable("company", company);

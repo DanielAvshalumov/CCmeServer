@@ -109,13 +109,14 @@ public class UserService {
     public User addSkill(Skill skill) {
         try {
             User user = SecurityUtil.getAuthenticated();
-            
-            user.addSkill(skillRepository.save(skill));
+            Skill _skill = skillRepository.save(skill);
+            user.addSkill(_skill);
             userRepository.save(user);
             return user;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            
             return null;
         }
         

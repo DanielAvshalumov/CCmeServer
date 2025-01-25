@@ -26,26 +26,9 @@ public class SkillController {
     private final SkillService skillService;
 
     @GetMapping("/")
-    public ResponseEntity<List<String>> getAllSkills() {
-        List<String> res = skillService.getAllDistinctSkills();
+    public ResponseEntity<List<Skill>> getAllSkills() {
+        List<Skill> res = skillService.getAllDistinctSkills();
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Skill>> getUserSkills(@PathVariable("userId") Long userId) {
-        List<Skill> res = skillService.getUserSkills();
-        return ResponseEntity.ok(res);
-    }
-    
-    // @PostMapping("/create")
-    // public ResponseEntity<Skill> create(@RequestBody Skill skill) throws Exception {
-    //     Skill res = skillService.create(skill);
-    //     return ResponseEntity.ok(res);
-    // }
-
-    // @PatchMapping("/license-picture/{skillId}")
-    // public ResponseEntity<Skill> updateLicensePicture(@PathVariable("skillId") Long id, @RequestParam("file") MultipartFile file) {
-    //     Skill res = skillService.addLicensePicture(id,file);
-    //     return ResponseEntity.ok(res);
-    // }
 }

@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     List<User> findAllByisContractorTrueAndfirstNameLike(@Param("query") String query);
     @Query(value = "select us.user_id from user_skills us where us.skills_id in :ids", nativeQuery = true)
     List<User> findUsersBySkill(@Param("ids")List<Long> skillIds);
+    @Query(value = "select u.email from skill s join user_skills us on s.id=us.skills_id join user u on u.id=us.user_id where name in :skillNames", nativeQuery = true)
+    List<String> getUsersInSkill(@Param("skillNames") List<String> skillNames);
 }
