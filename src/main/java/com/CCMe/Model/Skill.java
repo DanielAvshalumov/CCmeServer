@@ -3,10 +3,8 @@ package com.CCMe.Model;
 import org.springframework.lang.Nullable;
 
 import com.CCMe.Entity.AbstractEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +24,4 @@ public class Skill extends AbstractEntity{
     @Nullable
     private Integer yearsExperience;
 
-    // @ManyToOne
-    // @JsonIgnore
-    // @Nullable
-    // private User user;
 }

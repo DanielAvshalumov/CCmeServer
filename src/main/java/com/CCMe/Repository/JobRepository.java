@@ -41,7 +41,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     // List<JobResponse> getProfileJobs(@Param("senderId") Long senderId);
 
 
-
+    // @Query(value = "SELECT * FROM job LEFT JOIN job_image on job.id=job_image.card_id;", nativeQuery = true)
     List<Job> findByOwner(User user);
     Optional<Job> findById(Long id);   
 }

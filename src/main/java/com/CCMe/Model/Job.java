@@ -1,13 +1,19 @@
 package com.CCMe.Model;
 
 import java.util.Date;
+import java.util.Set;
+
+import org.springframework.lang.Nullable;
 
 import com.CCMe.Entity.AbstractEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.NoArgsConstructor;
@@ -38,12 +44,31 @@ public class Job extends AbstractEntity{
 
     private Payment payment;
 
+    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    private Set<JobImage> jobImages;
+
     public Job(Date startDate, String location, String description) {
         System.out.println("Constructor hit");
         this.startDate = startDate;
         this.location = location;
         this.description = description;
         this.status = Status.INCOMPLETE;
+    }
+
+    public Set<JobImage> getJobImages() {
+        return jobImages;
+    }
+
+    public JobImage addJobImage(String url) {
+        JobImage res = new JobImage();
+        res.setJob(this);
+        res.setIamge(url);
+        jobImages.add(res);
+        return res;
+    }
+
+    public void setJobImages(Set<JobImage> jobImages) {
+        this.jobImages = jobImages;
     }
 
     public String getTitle() {

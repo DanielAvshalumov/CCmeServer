@@ -13,16 +13,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.CCMe.Configuration.SecurityUtil;
 import com.CCMe.Emails.SendJobAfterCreationEmail;
 import com.CCMe.Model.CreateJobRequest;
 import com.CCMe.Model.Job;
+import com.CCMe.Model.JobImage;
 import com.CCMe.Model.Skill;
 import com.CCMe.Model.Status;
 import com.CCMe.Model.User;
 import com.CCMe.Model.Request.GeocodeResponse;
+import com.CCMe.Repository.JobImageRepository;
 import com.CCMe.Repository.JobRepository;
 import com.CCMe.Repository.SkillRepository;
 import com.CCMe.Repository.UserRepository;
@@ -35,7 +38,8 @@ public class JobServiceImp implements JobService{
     private final JobRepository jobRepo;
     private final UserRepository userRepository;
     private final GoogleService googleService;
-
+    private final S3Service s3Service;
+    private final JobImageRepository jobImageRepository;
     
     @Override
     public ResponseEntity<List<Job>> getAll() throws NotFoundException {
@@ -105,5 +109,15 @@ public class JobServiceImp implements JobService{
     public ResponseEntity<Job> getJobById(Long id) {
         Job job = jobRepo.findById(id).get();
         return ResponseEntity.ok(job);
+    }
+
+    @Override
+    public JobImage uploadJobImage(MultipartFile file, Long jobId) {
+        Job job = jobRepo.findById(jobId).get();
+        String res = s3Service.uploadJobImage(jobId,file);
+        JobImage jobImage = job.addJobImage(res);
+        jobRepo.save(job);
+        return jobImage;
+        // return image;
     }
 }

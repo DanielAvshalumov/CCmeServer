@@ -21,6 +21,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 @Service
 @AllArgsConstructor
@@ -95,5 +96,23 @@ public class S3Service {
         } catch(Exception e) {
             throw new RuntimeException("Failed to get URL of uploaded file", e);
         }
+    }
+
+    public String uploadJobImage(Long jobId, MultipartFile file) {
+        try {
+            User user = SecurityUtil.getAuthenticated();
+            String path = Long.toString(user.getId())+"/job/"+Long.toString(jobId)+'/'+file.getOriginalFilename();
+            PutObjectResponse res = s3Client.putObject(PutObjectRequest.builder()
+                .bucket(BUCKET_NAME)
+                .key(path)
+                .acl(ObjectCannedACL.PUBLIC_READ)
+                .build(), RequestBody.fromInputStream(file.getInputStream(), file.getSize())
+            );
+            return  "https://" + BUCKET_NAME + ".s3.us-east-2.amazonaws.com/" + path;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
     }
 }
