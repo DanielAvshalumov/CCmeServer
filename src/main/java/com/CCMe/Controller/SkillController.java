@@ -31,4 +31,10 @@ public class SkillController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<Skill>> getSkillLimitBy(@RequestParam("limit") Integer limit) {
+        List<Skill> res = skillService.getPageableSkill(limit);
+        return ResponseEntity.ok(res);
+    }
+
 }

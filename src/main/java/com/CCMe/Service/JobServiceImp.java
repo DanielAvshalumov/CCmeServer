@@ -50,6 +50,7 @@ public class JobServiceImp implements JobService{
     @Transactional
     public ResponseEntity<Job> create(CreateJobRequest jobRequest) throws Exception{
         Job job = new Job(jobRequest.getStartDate(), jobRequest.getLocation(), jobRequest.getDescription());
+        job.setTitle(jobRequest.getTitle());
         job.setOwner(SecurityUtil.getAuthenticated());
         job.setDate(new Date());
         List<String> skillNames = jobRequest.getSkills();
@@ -119,5 +120,10 @@ public class JobServiceImp implements JobService{
         jobRepo.save(job);
         return jobImage;
         // return image;
+    }
+
+    public List<JobImage> getJobImages(int limit) {
+        List<JobImage> res = jobImageRepository.findAll();
+        return res;
     }
 }

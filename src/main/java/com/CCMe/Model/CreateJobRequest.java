@@ -15,4 +15,5 @@ public class CreateJobRequest {
     private String description;
     private List<String> skills;
     private Date startDate;
+    private String title;
 }

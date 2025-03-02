@@ -19,4 +19,5 @@ public interface JobService {
     public List<Object> getJobsByApplicant(Long id);
     public ResponseEntity<Job> getJobById(Long id);
     public JobImage uploadJobImage(MultipartFile file, Long jobId);
+    public List<JobImage> getJobImages(int limit);
 }

@@ -77,4 +77,10 @@ public class JobController {
         JobImage jobImage = jobService.uploadJobImage(file, jobId);
         return ResponseEntity.ok(jobImage);
     }
+
+    @GetMapping("/job-images")
+    public ResponseEntity<List<JobImage>> getJobImages() {
+        List<JobImage> images = jobService.getJobImages(5);
+        return ResponseEntity.ok(images);
+    }
 }

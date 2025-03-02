@@ -2,6 +2,8 @@ package com.CCMe.Repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,5 +21,8 @@ public interface SkillRepository extends JpaRepository<Skill, Long>{
     List<String> findDistinctSkillNames();
 
     List<Skill> findByNameIn(List<String> names);
+
+    @Query("SELECT s from Skill s")
+    Page<Skill> findLimitedSkills(Pageable pageable);
     
 }
